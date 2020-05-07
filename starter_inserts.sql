@@ -1,15 +1,15 @@
 -- User
 INSERT INTO `User` (`user_name`, `credentials`, `birth_date`, `sex`)
 VALUES
-  ('mary meh', 'maryedForLife', '1999-10-07', 'male'),
+  ('mary meh', 'maryedForLife', '1999-10-07', 0),
   ('joe king', 'realJoker', '1920-12-22', NULL),
-  ('don keigh', 'shrek', '2001-04-22', 'male'),
-  ('dinah mite', 'boom', '1860-06-17', 'female'),
-  ('horace cope', 'imascorpio', '2001-11-17', 'female'),
-  ('jim nasium', 'doyouevenlift', '1995-01-18', 'male'),
+  ('don keigh', 'shrek', '2001-04-22', 0),
+  ('dinah mite', 'boom', '1860-06-17', 1),
+  ('horace cope', 'imascorpio', '2001-11-17', 1),
+  ('jim nasium', 'doyouevenlift', '1995-01-18', 0),
   ('kay oss', 'goCrazy', '1990-10-31', NULL),
-  ('jay walker', 'watchfopopo', '1981-04-20', 'female'),
-  ('quill thecat', 'grass', '2019-04-23', 'male'),
+  ('jay walker', 'watchfopopo', '1981-04-20', 1),
+  ('quill thecat', 'grass', '2019-04-23', 0),
   ('anita room', 'plzhelp', '1974-08-16', NULL);
 
 -- Tests
