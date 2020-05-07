@@ -21,7 +21,7 @@ CREATE TABLE Test
 
 CREATE TABLE Color
 (
-  hex_code INT(11) NOT NULL,
+  hex_code varchar(6) NOT NULL,
   red_count INT(11) NOT NULL DEFAULT 0,
   orange_count INT(11) NOT NULL DEFAULT 0,
   yellow_count INT(11) NOT NULL DEFAULT 0,
