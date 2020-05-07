@@ -33,7 +33,7 @@ CREATE TABLE Color
 CREATE TABLE Question
 (
   question_ID INT(11) NOT NULL AUTO_INCREMENT,
-  hex_code INT(11) NOT NULL,
+  hex_code varchar(6) NOT NULL,
   test_ID INT(11),
   PRIMARY KEY (question_ID),
   FOREIGN KEY (hex_code) REFERENCES Color(hex_code),
