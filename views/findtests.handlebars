@@ -1,0 +1,24 @@
+<script src="./findtests.js" charset="utf-8" defer></script>
+
+<div class="Page-Title">
+	Find Tests
+</div>
+
+<div class="Page-Content">
+
+	<div class="Find-color-selection">
+	
+		<span>Contains color: </span><input type="color" class="color-search-input-box"></input>
+		<span>Name contains text: </span><input class="title-search-input-box" type="text"></input>
+		<span>Summary contains text: </span><input class="summary-search-input-box" type="text"></input>
+		
+		<button type="button" class="find-tests-button">Search</button>
+		
+	</div>
+	<section id="find-tests-results">
+		{{#each findTest}}
+			{{> findTestsInfoTemplate}}
+		{{/each}}
+	</section>
+
+</div>
