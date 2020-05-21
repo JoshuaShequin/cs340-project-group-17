@@ -1,0 +1,28 @@
+<div class="Page-Title">
+	Color Information
+</div>
+
+<div class="Page-Content">
+	<div class="ColorBox">
+		<style type="text/css">
+			background-color: {{color}}
+		</style>
+		<span class="ColorHexCode">{{color}}</span>
+	</div>
+	
+	<div class="PercentChosenBox">
+		<span class="RedPercentChosenText">Red</span><span class="RedPercentChosenValue">% {{redValue}}</span>
+		<span class="OrangePercentChosenText">Orange</span><span class="OrangePercentChosenValue">% {{orangeValue}}</span>
+		<span class="YellowPercentChosenText">Yellow</span><span class="YellowPercentChosenValue">% {{yellowValue}}</span>
+		<span class="GreenPercentChosenText">Green</span><span class="GreenPercentChosenValue">% {{GreenValue}}</span>
+		<span class="BluePercentChosenText">Blue</span><span class="BluePercentChosenValue">% {{blueValue}}</span>
+	</div>
+	
+	<div class="ColorPageTestsResults">
+		<section id="find-tests-results">
+			{{#each findTest}}
+				{{> findTestsInfoTemplate}}
+			{{/each}}
+		</section>
+	</div>
+</div>
