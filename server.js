@@ -23,7 +23,14 @@ app.get('/', function(req, res, next){
 
 app.get('/color', function(req, res, next){
 	// set our default page to index.html, served through handlebars
-	res.status(200).render('color');
+	res.status(200).render('color', {
+		color: "#ff0000",
+		redValue: "99",
+		orangeValue: "1",
+		yellowValue: "0",
+		greenValue: "0",
+		blueValue: "0"
+	});
 });
 
 app.get('/createaccount', function(req, res, next){
