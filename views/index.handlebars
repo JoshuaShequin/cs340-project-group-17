@@ -1,1 +1,112 @@
-<h2>Welcome!</h2>
+<div class="Page-Title">
+	Home Page
+</div>
+
+<div class="Page-Content">
+
+	<div class="Recent-Tests-Container>
+		<span class="TopOfContainerText">Recent Tests</span>
+		<section id="find-tests-results">
+		{{#each recentTests}}
+			{{> findTestsInfoTemplate}}
+		{{/each}}
+	</section>
+	</div>
+	
+	<div class="Popular-Tests-Container>
+		<span class="TopOfContainerText">Popular Tests</span>
+		<section id="find-tests-results">
+		{{#each popularTests}}
+			{{> findTestsInfoTemplate}}
+		{{/each}}
+	</section>
+	</div>
+	
+	<div class="Your-Tests-Container>
+		<span class="TopOfContainerText">Your Tests</span>
+		<section id="find-tests-results">
+		{{#each yourTests}}
+			{{> YourTestsTemplate}}
+		{{/each}}
+	</section>
+	</div>
+	
+	<div class="Create-Tests-Container">
+		<button type="submit" class="Create-Test-Button" value="">Create Test</button>
+	</div>
+	
+	<div class="Manage-Account-Container">
+		<button type="submit" class="Manage-Account-Button" value="">Manage Account</button>
+	</div>
+
+</div>
+
+<div id="modal-backdrop" class="hidden"></div>
+<div id="manage-user-modal" class="hidden">
+  <div class="modal-dialog">
+
+	<div class="modal-header">
+	  <span>Manage Account</span>
+	  <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
+	</div>
+
+	<div class="modal-body">
+
+	  <div class="post-input-element">
+		<label for="new-user-name-input">Enter New Username</label>
+		<input type="text" id="new-user-name-input"></input>
+	  </div>
+	  
+	  <div class="post-input-element">
+		<label for="confirm-user-name-input">Confirm New Username</label>
+		<input type="text" id="confirm-user-name-input"></input>
+	  </div>
+	  
+	  <div class="new-user-name-confirm">
+		<button type="submit" class="change-user-name-button" value="">Change username</button>
+	  </div>
+	  
+	  <div class="delete-user-container">
+		<button type="submit" class="delete-user-button" value="">Delete Account</button>
+	  </div>
+
+	</div>
+
+  </div>
+</div>
+
+<div id="manage-test-modal" class="hidden">
+  <div class="modal-dialog">
+
+	<div class="modal-header">
+	  <span>Manage Test</span>
+	  <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
+	</div>
+
+	<div class="modal-body">
+
+	  <div class="post-input-element">
+		<label for="test-name-input">Test name</label>
+		<input type="text" id="test-name-input"></input>
+	  </div>
+	  
+	  <div class="post-input-element">
+		<label for="test-summary-input">Confirm New Username</label>
+		<input type="text" id="test-summary-input"></input>
+	  </div>
+	  
+	  <div class="question-list">
+	  </div>
+	  
+	  <div class="edit-test-confirm">
+		<button type="submit" class="edit-test-button" value="">Save Changes</button>
+	  </div>
+	  
+	  <div class="delete-test-container">
+		<button type="submit" class="delete-test-button" value="">Delete Test</button>
+	  </div>
+
+	</div>
+
+  </div>
+</div>

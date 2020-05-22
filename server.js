@@ -18,7 +18,24 @@ app.use(express.static('public')); // any files in public can be requested and w
 
 app.get('/', function(req, res, next){
 	// set our default page to index.html, served through handlebars
-	res.status(200).render('index');
+	dummyRecentTests = [{
+		testName: "Most Recent Test",
+		testSumm: "Blah blah blah"
+	}];
+	dummyPopularTests = [{
+		testName: "Most popular test",
+		testSumm: "Blah blah blah"
+	}];
+	dummyYourTests = [{
+		testName: "Most Recent Test",
+		testSumm: "Blah blah blah",
+		test_id: "1"
+	}];
+	res.status(200).render('index', {
+		recentTests: dummyRecentTests,
+		popularTests: dummyPopularTests,
+		yourTests: dummyYourTests
+	});
 });
 
 app.get('/color', function(req, res, next){
