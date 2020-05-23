@@ -1,24 +1,24 @@
-<div class="Page-Title">
-	Color Information
+<div class="page-title">
+	<span>Color Information</span>
 </div>
 
-<div class="Page-Content">
-	<div class="ColorBox">
+<div class="page-content">
+	<div class="color-box">
 		<style type="text/css">
 			background-color: {{color}}
 		</style>
-		<span class="ColorHexCode">{{color}}</span>
+		<span class="color-hex-code">{{color}}</span>
 	</div>
 	
-	<div class="PercentChosenBox">
-		<span class="RedPercentChosenText">Red</span><span class="RedPercentChosenValue">% {{redValue}}</span>
-		<span class="OrangePercentChosenText">Orange</span><span class="OrangePercentChosenValue">% {{orangeValue}}</span>
-		<span class="YellowPercentChosenText">Yellow</span><span class="YellowPercentChosenValue">% {{yellowValue}}</span>
-		<span class="GreenPercentChosenText">Green</span><span class="GreenPercentChosenValue">% {{GreenValue}}</span>
-		<span class="BluePercentChosenText">Blue</span><span class="BluePercentChosenValue">% {{blueValue}}</span>
+	<div class="percent-chosen-box">
+		<span class="red-percent-chosen-text">Red</span><span class="red-percent-chosen-value">% {{redValue}}</span>
+		<span class="orange-percent-chosen-text">Orange</span><span class="orange-percent-chosen-value">% {{orangeValue}}</span>
+		<span class="yellow-percent-chosen-text">Yellow</span><span class="yellow-percent-chosen-value">% {{yellowValue}}</span>
+		<span class="green-percent-chosen-text">Green</span><span class="green-percent-chosen-value">% {{GreenValue}}</span>
+		<span class="blue-percent-chosen-text">Blue</span><span class="blue-percent-chosen-value">% {{blueValue}}</span>
 	</div>
 	
-	<div class="ColorPageTestsResults">
+	<div class="color-page-tests-results">
 		<section id="find-tests-results">
 			{{#each findTest}}
 				{{> findTestsInfoTemplate}}

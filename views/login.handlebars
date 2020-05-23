@@ -11,35 +11,35 @@ class: Modal-Footer
 class: Modal-Exit-Button
  --}}
 <script src="./verifyNewAccount.js" charset="utf-8" defer></script>
-<div class="Page-Title">
+<div class="page-title">
 	Log in
 </div>
 
-<div class="Page-Content">
-    <div class="Login-Container">
-        <Label for="Useranme"><b>Username</b></Label>
-        <input type="text" id="Username-Input" placeholder="Enter username...">
+<div class="page-content">
+    <div class="login-container">
+        <Label for="useranme"><b>Username</b></Label>
+        <input type="text" id="username-input" placeholder="Enter username...">
         
-        <Label for="Password"><b>Password</b></Label>
-        <input type="text" id="Password-Input" placeholder="Enter password...">
+        <Label for="password"><b>Password</b></Label>
+        <input type="text" id="password-input" placeholder="Enter password...">
         
-        <button type="login" id="Login-Button"></button>
+        <button type="login" id="login-button"></button>
 
-        <label type="checkbox" checked="checked" name="remember"> Remember me</label>
+        <label type="checkbox" checked="checked" name="remember">Remember me</label>
 
-        <button type="New-Account" id="New-Account-Button"></button>
+        <button type="new-account" id="new-account-button"></button>
 
     </div>
 </div>
 {{!-- Display a modal if the user gets the username or password wrong --}}
-<div id="Modal-Backdrop" class="hidden"></div>
-<div id="Create-Login-Error-Modal" class="hidden">
-    <div class="Modal-Error-Dialog">
-        <div class="Modal-Header">
+<div id="modal-backdrop" class="hidden"></div>
+<div id="create-login-error-modal" class="hidden">
+    <div class="modal-error-dialog">
+        <div class="modal-header">
             <h3>Error: username or password is incorrect!</h3>
         </div>
     </div>
-    <div class="Modal-Footer">
-        <button type="button" class="Modal-Exit-Button">Exit</button>
+    <div class="modal-footer">
+        <button type="button" class="modal-exit-button">Exit</button>
     </div>
 </div>

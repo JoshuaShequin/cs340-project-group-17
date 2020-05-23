@@ -1,11 +1,11 @@
-<div class="Page-Title">
-	Home Page
+<div class="page-title">
+	<span>Home Page</span>
 </div>
 
-<div class="Page-Content">
+<div class="page-content">
 
-	<div class="Recent-Tests-Container>
-		<span class="TopOfContainerText">Recent Tests</span>
+	<div class="recent-tests-container">
+		<span class="top-of-container-text">Recent Tests</span>
 		<section id="find-tests-results">
 		{{#each recentTests}}
 			{{> findTestsInfoTemplate}}
@@ -13,8 +13,8 @@
 	</section>
 	</div>
 	
-	<div class="Popular-Tests-Container>
-		<span class="TopOfContainerText">Popular Tests</span>
+	<div class="popular-tests-container">
+		<span class="top-of-container-text">Popular Tests</span>
 		<section id="find-tests-results">
 		{{#each popularTests}}
 			{{> findTestsInfoTemplate}}
@@ -22,8 +22,8 @@
 	</section>
 	</div>
 	
-	<div class="Your-Tests-Container>
-		<span class="TopOfContainerText">Your Tests</span>
+	<div class="your-tests-container">
+		<span class="top-of-container-text">Your Tests</span>
 		<section id="find-tests-results">
 		{{#each yourTests}}
 			{{> YourTestsTemplate}}
@@ -31,12 +31,12 @@
 	</section>
 	</div>
 	
-	<div class="Create-Tests-Container">
-		<button type="submit" class="Create-Test-Button" value="">Create Test</button>
+	<div class="create-tests-container">
+		<button type="submit" class="create-test-button" value="">Create Test</button>
 	</div>
 	
-	<div class="Manage-Account-Container">
-		<button type="submit" class="Manage-Account-Button" value="">Manage Account</button>
+	<div class="manage-account-container">
+		<button type="submit" class="manage-account-button" value="">Manage Account</button>
 	</div>
 
 </div>

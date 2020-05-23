@@ -58,7 +58,12 @@ a {
 
 /* Below is for the title of the individual pages */
 
-.Page-Title {
+.login-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.page-title {
 	display: flex;
 	background-color: gray;
 	border: 10px solid black;
@@ -73,3 +78,48 @@ h1 {
 	align-self: center;
 	margin-left: 15px;
 }
+
+.page-content {
+	border: 10px solid black;
+	border-top: 0;
+	background-color: lightgray;
+	height: 85%;
+}
+
+.find-color-selection {
+	font-size: 20px;
+	padding: 10px;
+}
+
+#find-tests-results {
+	display: grid;
+}
+
+.question {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* align-content: center; */
+  align-items: center;
+
+  /* background-color: {{question}}; */
+}
+
+.answer {
+  border-radius: 20%;
+  margin: 20px;
+  padding: 30px;
+  background-color: gray;
+  color: white;
+}
+
+.submit-button {
+  height: 50px;
+  width: 100px;
+  align-self: flex-end;
+  position: fixed;
+  right: 60px;
+  bottom: 60px;
+}
+
