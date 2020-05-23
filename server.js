@@ -85,6 +85,23 @@ app.get('/question', function(req, res, next){
 	res.status(200).render('login');
 });
 
+app.get('/testinformation', function(req, res, next){
+	dummyQuestionList = [{
+		questionNum: "1",
+		question_id: "1",
+		questionHexCode: "#ff0000"
+	}];
+	
+	res.status(200).render('testInformation', {
+		testName: "Dummy Test",
+		testPercent: "00",
+		testCorrect: "0",
+		testTotal: "1",
+		testSummary: "Dummy Summary",
+		allQuestions: dummyQuestionList
+	});
+});
+
 app.get('*', function (req, res, next){
 	// if requested routing does not exist, serve 404 page through handlebars
 	res.status(404).render('404');
