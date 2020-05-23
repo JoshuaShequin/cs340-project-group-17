@@ -130,3 +130,29 @@ a {
   right: 60px;
   bottom: 60px;
 }
+
+.hidden {
+  display: none;
+}
+
+#create-account-button {
+  color: #343434;
+  cursor: pointer;
+}
+
+.create-account-container {
+  width: auto;
+  border: 5px solid black;
+  max-width: 600px;
+  min-width: 200px;
+  min-height: 50px;
+  margin: 40px auto;
+  background-color: grey;
+}
+
+.username-input {
+  text-align: center;
+}
+.password-input {
+  text-align: center;
+}
