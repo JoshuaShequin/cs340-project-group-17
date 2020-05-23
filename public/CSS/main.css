@@ -17,6 +17,9 @@ a {
   margin: 0;
   padding: 10px;
   text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 60px;
 }
 
 .site-title a {
