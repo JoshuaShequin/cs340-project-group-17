@@ -1,0 +1,45 @@
+{{!-- 
+verifyNewAccout.js
+class: Login-Container
+id: Login-Button
+id: New-Account-Button
+id: Modal-Backdrop
+id: Create-Login-Error-Modal
+class Modal-Error-Dialog
+class: Modal-Header
+class: Modal-Footer
+class: Modal-Exit-Button
+ --}}
+<script src="./verifyNewAccount.js" charset="utf-8" defer></script>
+<div class="Page-Title">
+	Log in
+</div>
+
+<div class="Page-Content">
+    <div class="Login-Container">
+        <Label for="Useranme"><b>Username</b></Label>
+        <input type="text" id="Username-Input" placeholder="Enter username...">
+        
+        <Label for="Password"><b>Password</b></Label>
+        <input type="text" id="Password-Input" placeholder="Enter password...">
+        
+        <button type="login" id="Login-Button"></button>
+
+        <label type="checkbox" checked="checked" name="remember"> Remember me</label>
+
+        <button type="New-Account" id="New-Account-Button"></button>
+
+    </div>
+</div>
+{{!-- Display a modal if the user gets the username or password wrong --}}
+<div id="Modal-Backdrop" class="hidden"></div>
+<div id="Create-Login-Error-Modal" class="hidden">
+    <div class="Modal-Error-Dialog">
+        <div class="Modal-Header">
+            <h3>Error: username or password is incorrect!</h3>
+        </div>
+    </div>
+    <div class="Modal-Footer">
+        <button type="button" class="Modal-Exit-Button">Exit</button>
+    </div>
+</div>
