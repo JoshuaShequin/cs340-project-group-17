@@ -17,6 +17,11 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public')); // any files in public can be requested and will be returned.
 
 app.get('/', function(req, res, next){
+
+	res.status(200).render('login');
+});
+
+app.get('/home', function(req, res, next){
 	// set our default page to index.html, served through handlebars
 	dummyRecentTests = [{
 		testName: "Most Recent Test",
@@ -73,10 +78,7 @@ app.get('/findtests', function(req, res, next){
 	});
 });
 
-app.get('/login', function(req, res, next){
 
-	res.status(200).render('login');
-});
 
 app.get('/managetest', function(req, res, next){
 
@@ -90,7 +92,7 @@ app.get('/manageuser', function(req, res, next){
 
 app.get('/question', function(req, res, next){
 
-	res.status(200).render('login');
+	res.status(200).render('question');
 });
 
 app.get('/testinformation', function(req, res, next){
@@ -123,8 +125,8 @@ SERVER_PORT = process.env.PORT; // this is the port that the server will listen 
 // set with PORT environment variable.
 
 if (SERVER_PORT == undefined){
-	// If the PORT variable does not exist, default to port 8000
-	SERVER_PORT = 8000;
+	// If the PORT variable does not exist, default to port 7721
+	SERVER_PORT = 7721;
 }
 
 app.listen(SERVER_PORT, function (){

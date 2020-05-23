@@ -1,8 +1,8 @@
+/* general changes to site */
 
 body {
- font: sans-serif;
+ font-family: sans-serif;
  background-color: lightgray;
-
 }
 
 
@@ -17,6 +17,9 @@ a {
   margin: 0;
   padding: 10px;
   text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 60px;
 }
 
 .site-title a {
@@ -25,7 +28,7 @@ a {
 
 
 
-  /* Nav bar css */
+/* Nav bar css */
 
 /* Add a black background color to the top navigation */
 .topnav {
@@ -56,11 +59,14 @@ a {
 }
 
 
+/* Below is for the title of the individual pages */
 
 .login-container {
   margin-top: 20px;
   text-align: center;
 }
+
+/* individual page titles */
 
 .page-title {
 	display: flex;
@@ -69,7 +75,7 @@ a {
 	height: 10%;
 }
 
-h1 {
+.page-title span {
 	color: black;
 	font-weight: bold;
 	font-size: 60px;
@@ -78,6 +84,7 @@ h1 {
 	margin-left: 15px;
 }
 
+/* Wrapping each pages content */
 .page-content {
 	border: 10px solid black;
 	border-top: 0;
@@ -93,6 +100,8 @@ h1 {
 #find-tests-results {
 	display: grid;
 }
+
+/* position flex objects on question page */
 
 .question {
   height: 100%;
@@ -120,4 +129,30 @@ h1 {
   position: fixed;
   right: 60px;
   bottom: 60px;
+}
+
+.hidden {
+  display: none;
+}
+
+#create-account-button {
+  color: #343434;
+  cursor: pointer;
+}
+
+.create-account-container {
+  width: auto;
+  border: 5px solid black;
+  max-width: 600px;
+  min-width: 200px;
+  min-height: 50px;
+  margin: 40px auto;
+  background-color: grey;
+}
+
+.username-input {
+  text-align: center;
+}
+.password-input {
+  text-align: center;
 }

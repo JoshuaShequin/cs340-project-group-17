@@ -12,7 +12,7 @@ class: Modal-Exit-Button
  --}}
 <script src="./verifyNewAccount.js" charset="utf-8" defer></script>
 <div class="page-title">
-	Log in
+	<span>Login</span>
 </div>
 
 <div class="page-content">
@@ -23,7 +23,7 @@ class: Modal-Exit-Button
         <Label for="password"><b>Password</b></Label>
         <input type="text" id="password-input" placeholder="Enter password...">
         
-        <button type="login" id="login-button"></button>
+        <button type="login" id="login-button" onclick="location.href='/home'"></button>
 
         <label type="checkbox" checked="checked" name="remember">Remember me</label>
 
