@@ -1,7 +1,7 @@
 /* general changes to site */
 
 body {
- font: sans-serif;
+ font-family: sans-serif;
  background-color: lightgray;
 }
 
