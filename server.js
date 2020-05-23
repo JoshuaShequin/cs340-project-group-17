@@ -1,7 +1,7 @@
 // imports
 var express = require('express');
 var process = require('process');
-var exphbs = require("express-handlebars")
+var exphbs = require("express-handlebars");
 var fs = require('fs');
 
 var app = express();
