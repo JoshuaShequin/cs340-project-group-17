@@ -10,44 +10,44 @@ class: Modal-Error-UserAndPassword-Dialog
 class: "Modal-Exit-Button
  --}}
 <script src="./verifyNewAccount.js" charset="utf-8" defer></script>
-<div class="Page-Title">
+<div class="page-title">
 	Log in
 </div>
 
-<div class="Page-Content">
-    <div class="Create-Account-Container">
-        <Label for="Useranme"><b>Username</b></Label>
-        <input type="text" id="Username-Input" placeholder="Enter username...">
+<div class="page-content">
+    <div class="create-account-container">
+        <Label for="useranme"><b>Username</b></Label>
+        <input type="text" id="username-input" placeholder="Enter username...">
         
-        <Label for="Password"><b>Password</b></Label>
-        <input type="text" id="Password-Input" placeholder="Enter password...">
+        <Label for="password"><b>Password</b></Label>
+        <input type="text" id="password-input" placeholder="Enter password...">
         
-        <button type="create" id="Create-Accont-Button"></button>
+        <button type="create" id="create-accont-button"></button>
     </div>
 </div>
 {{!-- Create different modals for different errors --}}
-<div id="Modal-Backdrop" class="hidden"></div>
-<div id="Create-Error-Modal" class="hidden">
+<div id="modal-backdrop" class="hidden"></div>
+<div id="create-error-modal" class="hidden">
     {{!-- username exists --}}
-    <div class="Modal-Error-UserExists-Dialog">
-        <div class="Modal-Header">
+    <div class="modal-error-user-exists-dialog">
+        <div class="modal-header">
             <h3>Error: Username already exists!</h3>
         </div>
     </div>
 
-    <div class="Modal-Footer">
-        <button type="button" class="Modal-Exit-Button">Exit</button>
+    <div class="modal-footer">
+        <button type="button" class="modal-exit-button">Exit</button>
     </div>
 </div>
 
-<div id="Create-Error-Modal" class="hidden">
+<div id="create-error-modal" class="hidden">
     {{!-- username exists --}}
-    <div class="Modal-Error-UserAndPassword-Dialog">
-        <div class="Modal-Header">
+    <div class="modal-error-user-and-password-dialog">
+        <div class="modal-header">
             <h3>Error: Username or password are invalid!</h3>
         </div>
     </div>
-    <div class="Modal-Footer">
-        <button type="button" class="Modal-Exit-Button">Exit</button>
+    <div class="modal-footer">
+        <button type="button" class="modal-exit-button">Exit</button>
     </div>
 </div>
