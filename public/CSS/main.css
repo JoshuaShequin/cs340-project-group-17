@@ -54,3 +54,22 @@ a {
   background-color: gray;
   color: black;
 }
+
+
+/* Below is for the title of the individual pages */
+
+.Page-Title {
+	display: flex;
+	background-color: gray;
+	border: 10px solid black;
+	height: 10%;
+}
+
+h1 {
+	color: black;
+	font-weight: bold;
+	font-size: 60px;
+	margin: 0;
+	align-self: center;
+	margin-left: 15px;
+}
