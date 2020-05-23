@@ -1,0 +1,28 @@
+<div class="Page-Title">
+	Color Information
+</div>
+
+<div class="Page-Content">
+
+	<div class="Test-Name-Container>
+		<span class="Test-Name-Span">{{testName}}</span>
+	</div>
+	
+	<div class="Test-Score-Container>
+		<span class="Test-Percent-Span">%{{testPercent}}</span>
+		<span class="Test-Correct-Total-Span">{{testCorrect}}/{{testTotal}}</span>
+	</div>
+	
+	<div class="Test-Summary-Container>
+		<span class="Test-Summary-Span">{{testSummary}}</span>
+	</div>
+	
+	<div class="Question-Container">
+		<section id="list-of-questions">
+			{{#each allQuestions}}
+				{{> questionListedTemplate}}
+			{{/each}}
+		</section>
+	</div>
+
+</div>
