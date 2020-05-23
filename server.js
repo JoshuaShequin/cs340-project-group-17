@@ -61,8 +61,16 @@ app.get('/createtest', function(req, res, next){
 });
 
 app.get('/findtests', function(req, res, next){
+	
+	dummyTestList = [{
+		testName: "Dummy Test",
+		testSumm: "Dummy Summary",
+		test_id: "1"
+	}];
 
-	res.status(200).render('findtests');
+	res.status(200).render('findtests', {
+		findTest: dummyTestList
+	});
 });
 
 app.get('/login', function(req, res, next){
