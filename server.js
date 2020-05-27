@@ -3,12 +3,29 @@ var express = require('express');
 var process = require('process');
 var exphbs = require("express-handlebars");
 var fs = require('fs');
+var mysql = require('mysql');
 
 var app = express();
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+var con = mysql.createConnection({
+  host: "127.0.0.1",
+  user: "root",
+  password: "root",
+  database: "color_test_testing"
+});
 
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+  
+  // query statement here, replace sql with actual sql and handle result correctly.
+  con.query("SELECT * FROM user", function (err, result) {
+    if (err) throw err;
+    console.log("Result: " + result[0].user_name);
+  });
+});
 
 
 
