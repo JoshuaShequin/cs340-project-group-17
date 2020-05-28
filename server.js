@@ -3,14 +3,14 @@ var express = require('express');
 var process = require('process');
 var exphbs = require("express-handlebars");
 var fs = require('fs');
-var lts = require('./server_js/login_tools');
+var cts = require('./server_js/connection_tools');
 
 
 var app = express();
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-con = lts.create_connection();
+con = cts.create_connection();
 
 //////Start/////////////--File Hosting--///////////////////////////////////////////////
 
