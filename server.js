@@ -3,14 +3,14 @@ var express = require('express');
 var process = require('process');
 var exphbs = require("express-handlebars");
 var fs = require('fs');
+var cts = require('./server_js/connection_tools');
+
 
 var app = express();
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-
-
-
+con = cts.create_connection();
 
 //////Start/////////////--File Hosting--///////////////////////////////////////////////
 
@@ -19,6 +19,7 @@ app.use(express.static('public')); // any files in public can be requested and w
 app.get('/', function(req, res, next){
 
 	res.status(200).render('login');
+
 });
 
 app.get('/home', function(req, res, next){
@@ -53,6 +54,7 @@ app.get('/color', function(req, res, next){
 		greenValue: "0",
 		blueValue: "0"
 	});
+	
 });
 
 app.get('/createaccount', function(req, res, next){
