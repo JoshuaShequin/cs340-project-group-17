@@ -41,11 +41,13 @@ app.get('/home', function(req, res, next){
 	// set our default page to index.html, served through handlebars
 	dummyRecentTests = [{
 		testName: "Most Recent Test",
-		testSumm: "Blah blah blah"
+		testSumm: "Blah blah blah",
+		test_id: "1"
 	}];
 	dummyPopularTests = [{
 		testName: "Most popular test",
-		testSumm: "Blah blah blah"
+		testSumm: "Blah blah blah",
+		test_id: "1"
 	}];
 	dummyYourTests = [{
 		testName: "Most Recent Test",
@@ -110,6 +112,24 @@ app.get('/manageuser', function(req, res, next){
 app.get('/question', function(req, res, next){
 
 	res.status(200).render('question');
+});
+
+app.get('/testinformation/:test_id', function(req, res, next){
+	var test_id = req.params.test_id;
+	dummyQuestionList = [{
+		questionNum: "1",
+		question_id: "1",
+		questionHexCode: "#ff0000"
+	}];
+	
+	res.status(200).render('testInformation', {
+		testName: "Dummy Test",
+		testPercent: "00",
+		testCorrect: "0",
+		testTotal: "1",
+		testSummary: "Dummy Summary",
+		allQuestions: dummyQuestionList
+	});
 });
 
 app.get('/testinformation', function(req, res, next){
