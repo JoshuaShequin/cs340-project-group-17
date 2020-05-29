@@ -4,11 +4,13 @@ var process = require('process');
 var exphbs = require("express-handlebars");
 var fs = require('fs');
 var cts = require('./server_js/connection_tools');
+var bodyParser = require('body-parser');
 
 
 var app = express();
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+app.use(bodyParser.json());
 
 con = cts.create_connection();
 
@@ -19,6 +21,19 @@ app.use(express.static('public')); // any files in public can be requested and w
 app.get('/', function(req, res, next){
 
 	res.status(200).render('login');
+
+});
+
+app.post('/enterlogin', function(req, res, next){
+
+	if (req.body && req.body.user_name && req.body.pass){
+		cts.check_user_name(con, req.body.user_name, user_name_result, [req, res]);
+	}
+	else{
+		res.status(200).send('Incorrect password or username!');
+	};
+	
+	
 
 });
 
@@ -120,6 +135,28 @@ app.get('*', function (req, res, next){
 });
 
 //////End///////////////--File Hosting--///////////////////////////////////////////////
+
+//////start///////////////--server functions--///////////////////////////////////////////////
+
+function user_name_result(bool, passed_variables){
+	if (bool){
+		cts.check_password(con, passed_variables[0].body.user_name, passed_variables[0].body.pass, password_result, passed_variables);
+	}
+	else{
+		passed_variables[1].status(200).send("Incorrect password or username!");
+	};
+};
+
+function password_result(bool, passed_variables){
+	if (bool){
+		passed_variables[1].status(200).send("Login successful!");
+	}
+	else{
+		passed_variables[1].status(200).send("Incorrect password or username!");
+	};
+}
+
+//////End///////////////--server function--///////////////////////////////////////////////
 
 /////--SERVER START--//////////////////////////
 

@@ -11,6 +11,7 @@ class: Modal-Footer
 class: Modal-Exit-Button
  --}}
 <script src="./verifyNewAccount.js" charset="utf-8" defer></script>
+<script src="./login.js" charset="utf-8" defer></script>
 <div class="page-title">
 	<span>Login</span>
 </div>
@@ -23,11 +24,7 @@ class: Modal-Exit-Button
         <Label for="password"><b>Password</b></Label>
         <input type="text" id="password-input" placeholder="Enter password...">
         
-        <button type="login" id="login-button" onclick="location.href='/home'"></button>
-
-        <label type="checkbox" checked="checked" name="remember">Remember me</label>
-
-        <button type="new-account" id="new-account-button"></button>
+        <button type="button" id="login-button">Login</button>
 
     </div>
 </div>

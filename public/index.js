@@ -1,3 +1,10 @@
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
 function showCreateTestModal() {
 
   var showSomethingModal = document.getElementById('create-test-modal');
@@ -42,6 +49,12 @@ function showManageTestModal() {
 
 };
 
+function logout(){
+	setCookie("user_name",'', 5);
+	setCookie("pass", '', 5);
+	window.location.replace("/");
+}
+
 
 window.addEventListener('DOMContentLoaded', function () {
 	
@@ -64,5 +77,8 @@ window.addEventListener('DOMContentLoaded', function () {
 	for (var i = 0; i < modalHideButtons.length; i++) {
 		modalHideButtons[i].addEventListener('click', hideModals);
 	}
+	
+	var logoutButton = document.getElementById('logout-button');
+	logoutButton.addEventListener('click', logout);
 	
 });
