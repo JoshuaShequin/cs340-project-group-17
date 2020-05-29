@@ -143,7 +143,7 @@ function user_name_result(bool, passed_variables){
 		cts.check_password(con, passed_variables[0].body.user_name, passed_variables[0].body.pass, password_result, passed_variables);
 	}
 	else{
-		passed_variables[0].status(200).send("Incorrect password or username!");
+		passed_variables[1].status(200).send("Incorrect password or username!");
 	};
 };
 
