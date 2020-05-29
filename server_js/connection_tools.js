@@ -27,17 +27,17 @@ methods.check_user_name = function(con, user, next_func, passed_variables){
 		}
 		else next_func(true, passed_variables);
 	});
-	
+
 }
 
 methods.update_password = function(con, user, pass){
 	/*
 		Updates the password of the input user with the input password. Assumes user_name already exists.
-	
+
 		con - the connection object, expected to be connected already
 		user - the user_name of the user that the password is getting updated
 		pass - the new password being used
-	
+
 	*/
 	hash = bcrypt.hashSync(pass, saltRounds);
 	var sql = 'Update user SET credentials="'+hash+'" WHERE user_name="'+user+'";';
@@ -47,12 +47,12 @@ methods.update_password = function(con, user, pass){
 methods.check_password = function(con, user, pass, next_func, passed_variables){
 	/*
 		Checks the input password from the input user with the database password for the user. Assumes the user already exists.
-		
+
 		con - the connection object, expected to be connected already
 		user - the user_name of the user that the password is getting checked on
 		pass - the input password to be checked
 		next_func - the function that the async part of the function will call when it is done.
-		
+
 	*/
 	var sql = "SELECT credentials FROM user WHERE user_name='"+user+"';";
 	con.query(sql, function(err, result){
@@ -60,6 +60,32 @@ methods.check_password = function(con, user, pass, next_func, passed_variables){
 		next_func(bcrypt.compareSync(pass, result[0].credentials), passed_variables);
 	});
 };
+
+
+/* Create account connection_tool*/
+
+methods.pass_form(form,func) {
+	console.log(form);
+}
+
+methods.create_user = function (con, name, pass, date, sex) {
+	var sexI;
+
+	if (sex == 'male') 				sexI = 0;
+	else if (sex == 'female') sexI = 1;
+	else 											sexI = NULL;
+	hash = bcrypt.hashSync(pass,saltRounds);
+
+
+	var sqlCheck = "SELECT user_name FROM User WHERE user_name='" + name + "';"
+	con.query(sqlCheck, function (err, result)) == NULL
+	if () {
+		var sqlEnter =	"INSERT INTO 'User' ('user_name', 'credentials', 'birth_date', 'sex')\
+										 VALUES (" + name + ", " + hash + ", " + date + ", " + sexI + ");";
+
+		con.query(sqlEnter);
+	}
+}
 
 
 
