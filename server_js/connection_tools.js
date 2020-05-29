@@ -18,6 +18,18 @@ methods.create_connection = function(){
 	return con;
 }
 
+methods.check_user_name = function(con, user, next_func, passed_variables){
+	var sql = "SELECT user_name FROM user WHERE user_name='"+user+"';";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		if (result.length == 0){
+			next_func(false, passed_variables);
+		}
+		else next_func(true, passed_variables);
+	});
+	
+}
+
 methods.update_password = function(con, user, pass){
 	/*
 		Updates the password of the input user with the input password. Assumes user_name already exists.
@@ -32,7 +44,7 @@ methods.update_password = function(con, user, pass){
 	con.query(sql);
 };
 
-methods.check_password = function(con, user, pass, next_func){
+methods.check_password = function(con, user, pass, next_func, passed_variables){
 	/*
 		Checks the input password from the input user with the database password for the user. Assumes the user already exists.
 		
@@ -45,7 +57,7 @@ methods.check_password = function(con, user, pass, next_func){
 	var sql = "SELECT credentials FROM user WHERE user_name='"+user+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
-		next_func(bcrypt.compareSync(pass, result[0].credentials));
+		next_func(bcrypt.compareSync(pass, result[0].credentials), passed_variables);
 	});
 };
 
