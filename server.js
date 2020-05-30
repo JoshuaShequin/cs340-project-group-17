@@ -116,22 +116,12 @@ app.get('/question', function(req, res, next){
 
 app.get('/testinformation/:test_id', function(req, res, next){
 	var test_id = req.params.test_id;
-	dummyQuestionList = [{
-		questionNum: "1",
-		question_id: "1",
-		questionHexCode: "#ff0000"
-	}];
 	
-	res.status(200).render('testInformation', {
-		testName: "Dummy Test",
-		testPercent: "00",
-		testCorrect: "0",
-		testTotal: "1",
-		testSummary: "Dummy Summary",
-		allQuestions: dummyQuestionList
-	});
+	cts.increment_test_taken_count(con, test_id); // not really representative of the true "taken_count", more like visited count. But it works.
+	cts.get_questions(con, test_id, test_information_render_p1, [req, res, test_id]);
 });
 
+/*
 app.get('/testinformation', function(req, res, next){
 	dummyQuestionList = [{
 		questionNum: "1",
@@ -148,6 +138,30 @@ app.get('/testinformation', function(req, res, next){
 		allQuestions: dummyQuestionList
 	});
 });
+*/
+
+app.post('/testinformation/answer/:user_name/:question_id', function(req, res, next){
+	if (req.body && req.body.user_name && req.body.answer){
+		var user_name = req.params.user_name;
+		var question_id = req.params.question_id;
+		
+		cts.get_correct_color(con, question_id, answer_question_p1, [req, res, user_name, question_id, req.body.answer]);
+	}
+	else{
+		res.status(200).send("NO");
+	};
+	
+});
+
+app.get('/testinformation/:user_name/:question_id', function(req, res, next){
+	
+	var user_name = req.params.user_name;
+	var question_id = req.params.question_id;
+	
+	cts.get_answer_information(con, user_name, question_id, relay_question_information, [req, res]);
+});
+
+
 
 app.get('*', function (req, res, next){
 	// if requested routing does not exist, serve 404 page through handlebars
@@ -175,6 +189,52 @@ function password_result(bool, passed_variables){
 		passed_variables[1].status(200).send("Incorrect password or username!");
 	};
 }
+
+function test_information_render_p1(content, passed_variables){
+	questionList = []
+	for (var i = 0; i < content.length; i++) {
+		questionList.push({
+			questionNum: String(i+1),
+			question_id: content[i].question_ID,
+			questionHexCode: "#" + content[i].hex_code
+		});
+	}
+	passed_variables.push(questionList);
+	cts.get_test_information(con, passed_variables[2], test_information_render_p2, passed_variables);
+	
+}
+
+function test_information_render_p2(content, passed_variables){
+	passed_variables[1].status(200).render('testInformation', {
+		testName: content[0].name,
+		testSummary: content[0].summary,
+		allQuestions: passed_variables[3]
+	});
+};
+
+function relay_question_information(content, passed_variables){
+	if(content.length == 1){
+		passed_variables[1].status(200).send("A:"+content[0].color_chosen);
+	}
+	else{
+		passed_variables[1].status(200).send("F:");
+	};
+};
+
+function answer_question_p1(content, passed_variables){
+	passed_variables.push(content);
+	cts.get_answer_information(con, passed_variables[2], passed_variables[3], answer_question_p2, passed_variables);
+}
+
+function answer_question_p2(content, passed_variables){
+	if(content.length > 0){
+		cts.update_answer(con, passed_variables[2], passed_variables[3], passed_variables[4], passed_variables[5]);
+	}
+	else{
+		cts.new_answer(con, passed_variables[2], passed_variables[3], passed_variables[4], passed_variables[5]);
+	}
+}
+
 
 //////End///////////////--server function--///////////////////////////////////////////////
 
