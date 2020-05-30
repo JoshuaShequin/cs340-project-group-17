@@ -1,4 +1,4 @@
-<script src="./testinformation.js" charset="utf-8" defer></script>
+<script src="/testinformation.js" charset="utf-8" defer></script>
 
 <div class="page-title">
 	<span>Test Information</span>
@@ -8,11 +8,6 @@
 
 	<div class="test-name-container">
 		<span class="test-name-span">{{testName}}</span>
-	</div>
-	
-	<div class="test-score-container">
-		<span class="test-percent-span">%{{testPercent}}</span>
-		<span class="test-correct-total-span">{{testCorrect}}/{{testTotal}}</span>
 	</div>
 	
 	<div class="test-summary-container">
@@ -34,7 +29,7 @@
   <div class="modal-dialog">
 
 	<div class="modal-header">
-	  <span>Question #</span>
+	  <span id="question-number-span">Question #</span>
 	  <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
 	</div>
 
@@ -42,18 +37,19 @@
 	
 		<div class="Question-header-container">
 			<span>What is this color?</span>
-			<div class="color-container" style="background-color:#ff0000; width: 100px; height: 100px;">
+			<div id="color-container" style="background-color:#ff0000; width: 100px; height: 100px;">
 			</div>
 		</div>
 
 		<div class="question">
-		  <div class="answer" id="colorGreen" >Green</div>
-		  <div class="answer" id="colorYellow">Yellow</div>
-		  <div class="answer" id="colorRed"   >Red</div>
-		  <div class="answer" id="colorBlue"  >Blue</div>
+		  <div class="answer answer-selected" id="colorRed"   >Red</div>
 		  <div class="answer" id="colorOrange">Orange</div>
+		  <div class="answer" id="colorYellow">Yellow</div>
+		  <div class="answer" id="colorGreen" >Green</div>
+		  <div class="answer" id="colorBlue"  >Blue</div>
+		  
 
-		  <button name="submit" class="submit-button">Submit Answer</button>
+		  <button name="submit" class="submit-button" id="submit-button">Submit Answer</button>
 		</div>
 
 	</div>
