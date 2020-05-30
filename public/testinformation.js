@@ -18,7 +18,6 @@ function getCookie(cname) {
 };
 
 function submitAnswer(){
-	console.log(color_selected)
 	if (color_selected != 6){
 		user_name = getCookie('user_name');
 		var oReq = new XMLHttpRequest();

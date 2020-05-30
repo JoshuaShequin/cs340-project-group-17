@@ -101,7 +101,7 @@ methods.get_answer_information = function(con, user_name, question_id, next_func
 
 methods.increment_color_count = function(con, hex_code, color){
 	colors = ["red_count", "orange_count", "yellow_count", "green_count", "blue_count"];
-	var sql = "UPDATE color SET "+colors[color]+"="+colors[color]+"+1 WHERE hex_code='"+hex_code+"';";
+	var sql = "UPDATE color SET "+colors[color-1]+"="+colors[color-1]+"+1 WHERE hex_code='"+hex_code+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 	});
@@ -109,7 +109,7 @@ methods.increment_color_count = function(con, hex_code, color){
 
 methods.decrement_color_count = function(con, hex_code, color){
 	colors = ["red_count", "orange_count", "yellow_count", "green_count", "blue_count"];
-	var sql = "UPDATE color SET "+colors[color]+"="+colors[color]+"-1 WHERE hex_code='"+hex_code+"';";
+	var sql = "UPDATE color SET "+colors[color-1]+"="+colors[color-1]+"-1 WHERE hex_code='"+hex_code+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 	});
@@ -151,23 +151,30 @@ methods.new_answer = function(con, user_name, question_id, color_chosen, correct
 	});
 	con.query(sql2, function(err, result){
 		if (err) throw err;
-		methods.increment_color_count(con, result.hex_code, color_chosen);
+		methods.increment_color_count(con, result[0].hex_code, color_chosen);
 	});
 }
 
 methods.update_answer = function(con, user_name, question_id, color_chosen, correct_color){
-	var sql = "UPDATE answers SET color_chosen="+color_chosen+", correct_color="+correct_color+" WHERE user_name='"+user_name+"' AND question_id="+question_id+";";
+	var sql = "UPDATE answers SET color_chosen="+String(color_chosen)+", correct_color="+correct_color+" WHERE user_name='"+user_name+"' AND question_id="+question_id+";";
 	var sql2 = "SELECT hex_code FROM question WHERE question_ID="+question_id+";";
+	var sql3 = "SELECT color_chosen FROM answers WHERE question_ID="+question_id+" AND user_name='"+user_name+"';";
 	con.query(sql2, function(err, result){
 		if (err) throw err;
-		methods.decrement_color_count(con, result.hex_code, color_chosen);
-	});
-	con.query(sql, function(err, result){
-		if (err) throw err;
-	});
-	con.query(sql2, function(err, result){
-		if (err) throw err;
-		methods.increment_color_count(con, result.hex_code, color_chosen);
+		var hex_code = result[0].hex_code;
+		con.query(sql3, function(err, result2){
+			methods.decrement_color_count(con, hex_code, result2[0].color_chosen);
+		});
+		
+		con.query(sql, function(err, result){
+			if (err) throw err;
+		});
+		
+		con.query(sql2, function(err, result){
+			if (err) throw err;
+			methods.increment_color_count(con, result[0].hex_code, color_chosen);
+		});
+		
 	});
 };
 
