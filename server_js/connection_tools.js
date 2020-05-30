@@ -7,10 +7,10 @@ var methods = {};
 
 methods.create_connection = function(){
 	var con = mysql.createConnection({
-	  host: "127.0.0.1",
-	  user: "root",
-	  password: "root",
-	  database: "color_test_testing"
+	  host: "classmysql.engr.oregonstate.edu",
+	  user: "cs340_shequinj",
+	  password: "9379",
+	  database: "cs340_shequinj"
 	});
 	con.connect(function(err){
 		if (err) throw err;
@@ -19,7 +19,7 @@ methods.create_connection = function(){
 }
 
 methods.check_user_name = function(con, user, next_func, passed_variables){
-	var sql = "SELECT user_name FROM user WHERE user_name='"+user+"';";
+	var sql = "SELECT user_name FROM User WHERE user_name='"+user+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 		if (result.length == 0){
@@ -40,7 +40,7 @@ methods.update_password = function(con, user, pass){
 	
 	*/
 	hash = bcrypt.hashSync(pass, saltRounds);
-	var sql = 'Update user SET credentials="'+hash+'" WHERE user_name="'+user+'";';
+	var sql = 'Update User SET credentials="'+hash+'" WHERE user_name="'+user+'";';
 	con.query(sql);
 };
 
@@ -54,7 +54,7 @@ methods.check_password = function(con, user, pass, next_func, passed_variables){
 		next_func - the function that the async part of the function will call when it is done.
 		
 	*/
-	var sql = "SELECT credentials FROM user WHERE user_name='"+user+"';";
+	var sql = "SELECT credentials FROM User WHERE user_name='"+user+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 		next_func(bcrypt.compareSync(pass, result[0].credentials), passed_variables);
@@ -68,7 +68,7 @@ methods.increment_test_taken_count = function(con, test_id){
 		con, the connection object, expected to be connected already
 		test_id - the test_id of the test that is going to have its taken_count incremented
 	*/
-	var sql = "UPDATE test SET taken_count = taken_count + 1 WHERE test_id='"+test_id+"';";
+	var sql = "UPDATE Test SET taken_count = taken_count + 1 WHERE test_id='"+test_id+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 	});
@@ -76,7 +76,7 @@ methods.increment_test_taken_count = function(con, test_id){
 
 
 methods.get_questions = function(con, test_id, next_func, passed_variables){
-	var sql = "SELECT * from question WHERE test_id='"+test_id+"' ORDER BY question_ID";
+	var sql = "SELECT * from Question WHERE test_id='"+test_id+"' ORDER BY question_ID";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 		next_func(result, passed_variables);
@@ -84,7 +84,7 @@ methods.get_questions = function(con, test_id, next_func, passed_variables){
 }
 
 methods.get_test_information = function(con, test_id, next_func, passed_variables){
-	var sql = "SELECT * from test WHERE test_id='"+test_id+"';";
+	var sql = "SELECT * from Test WHERE test_id='"+test_id+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 		next_func(result, passed_variables);
@@ -101,7 +101,7 @@ methods.get_answer_information = function(con, user_name, question_id, next_func
 
 methods.increment_color_count = function(con, hex_code, color){
 	colors = ["red_count", "orange_count", "yellow_count", "green_count", "blue_count"];
-	var sql = "UPDATE color SET "+colors[color-1]+"="+colors[color-1]+"+1 WHERE hex_code='"+hex_code+"';";
+	var sql = "UPDATE Color SET "+colors[color-1]+"="+colors[color-1]+"+1 WHERE hex_code='"+hex_code+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 	});
@@ -109,7 +109,7 @@ methods.increment_color_count = function(con, hex_code, color){
 
 methods.decrement_color_count = function(con, hex_code, color){
 	colors = ["red_count", "orange_count", "yellow_count", "green_count", "blue_count"];
-	var sql = "UPDATE color SET "+colors[color-1]+"="+colors[color-1]+"-1 WHERE hex_code='"+hex_code+"';";
+	var sql = "UPDATE Color SET "+colors[color-1]+"="+colors[color-1]+"-1 WHERE hex_code='"+hex_code+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 	});
@@ -117,10 +117,10 @@ methods.decrement_color_count = function(con, hex_code, color){
 
 methods.get_correct_color = function(con, question_ID, next_func, passed_variables){
 	
-	var sql2 = "SELECT hex_code FROM question WHERE question_ID="+question_ID+";";
+	var sql2 = "SELECT hex_code FROM Question WHERE question_ID="+question_ID+";";
 	con.query(sql2, function(err, result){
 		if (err) throw err;
-		var sql = "SELECT * from color WHERE hex_code='"+result.hex_code+"';";
+		var sql = "SELECT * from Color WHERE hex_code='"+result.hex_code+"';";
 		con.query(sql, function(err, result){
 			if (err) throw err;
 			
@@ -145,7 +145,7 @@ methods.get_correct_color = function(con, question_ID, next_func, passed_variabl
 
 methods.new_answer = function(con, user_name, question_id, color_chosen, correct_color){
 	var sql = "INSERT INTO answers(color_chosen, correct_color, user_name, question_ID) VALUES ("+color_chosen+","+correct_color+",'"+user_name+"',"+question_id+");";
-	var sql2 = "SELECT hex_code FROM question WHERE question_ID="+question_id+";";
+	var sql2 = "SELECT hex_code FROM Question WHERE question_ID="+question_id+";";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 	});
@@ -157,7 +157,7 @@ methods.new_answer = function(con, user_name, question_id, color_chosen, correct
 
 methods.update_answer = function(con, user_name, question_id, color_chosen, correct_color){
 	var sql = "UPDATE answers SET color_chosen="+String(color_chosen)+", correct_color="+correct_color+" WHERE user_name='"+user_name+"' AND question_id="+question_id+";";
-	var sql2 = "SELECT hex_code FROM question WHERE question_ID="+question_id+";";
+	var sql2 = "SELECT hex_code FROM Question WHERE question_ID="+question_id+";";
 	var sql3 = "SELECT color_chosen FROM answers WHERE question_ID="+question_id+" AND user_name='"+user_name+"';";
 	con.query(sql2, function(err, result){
 		if (err) throw err;
