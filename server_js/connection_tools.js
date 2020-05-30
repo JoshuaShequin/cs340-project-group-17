@@ -64,29 +64,31 @@ methods.check_password = function(con, user, pass, next_func, passed_variables){
 
 /* Create account connection_tool*/
 
-methods.pass_form(form,func) {
-	console.log(form);
+methods.create_userA = function (con, name, pass, date, sex) {
+	methods.check_user_name (con, name, methods.create_userB, [con,name,pass,date,sex]);
+
 }
 
-methods.create_user = function (con, name, pass, date, sex) {
-	var sexI;
+methods.create_userB = function (exists, con, name, pass, date, sex) {
 
-	if (sex == 'male') 				sexI = 0;
-	else if (sex == 'female') sexI = 1;
-	else 											sexI = NULL;
-	hash = bcrypt.hashSync(pass,saltRounds);
+	if (!exists) {
+		var sexI;
 
+		if (sex == 'male') 				sexI = 0;
+		else if (sex == 'female') sexI = 1;
+		else 											sexI = NULL;
 
-	var sqlCheck = "SELECT user_name FROM User WHERE user_name='" + name + "';"
-	con.query(sqlCheck, function (err, result)) == NULL
-	if () {
+		hash = bcrypt.hashSync(pass,saltRounds);
 		var sqlEnter =	"INSERT INTO 'User' ('user_name', 'credentials', 'birth_date', 'sex')\
-										 VALUES (" + name + ", " + hash + ", " + date + ", " + sexI + ");";
+		VALUES ('" + name + "', '" + hash + "', '" + date + "', " + sexI + ");";
 
 		con.query(sqlEnter);
+		res.status(200.send("success"));
+	}
+	else {
+		res.status(200).send("exists");
 	}
 }
-
 
 
 module.exports = methods;

@@ -54,7 +54,7 @@ class: Modal-Exit-Button
 		Create New Account
 	</div>
 
-  <form id="create-account-form" action="javascript:;" onsubmit="methods.pass_form(this,create_user);">
+  <form id="create-account-form">
 		<div class="create-account-entry">
 	  	<label for="username"><b>Username</b></label>
 	    <input type="text" name="username" id="username-input" placeholder="Enter username...">
@@ -84,6 +84,6 @@ class: Modal-Exit-Button
       <input type="date" name="date" id="password-input">
 		</div>
 
-        <button type="submit" id="create-account-button">Create</button>
+        <button type="button" id="create-account-button" onclick="sendData();">Create</button>
     </form>
 </div>

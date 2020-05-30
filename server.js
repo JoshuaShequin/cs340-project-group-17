@@ -32,9 +32,6 @@ app.post('/enterlogin', function(req, res, next){
 	else{
 		res.status(200).send('Incorrect password or username!');
 	};
-	
-	
-
 });
 
 app.get('/home', function(req, res, next){
@@ -69,7 +66,7 @@ app.get('/color', function(req, res, next){
 		greenValue: "0",
 		blueValue: "0"
 	});
-	
+
 });
 
 app.get('/createaccount', function(req, res, next){
@@ -83,7 +80,7 @@ app.get('/createtest', function(req, res, next){
 });
 
 app.get('/findtests', function(req, res, next){
-	
+
 	dummyTestList = [{
 		testName: "Dummy Test",
 		testSumm: "Dummy Summary",
@@ -118,7 +115,7 @@ app.get('/testinformation', function(req, res, next){
 		question_id: "1",
 		questionHexCode: "#ff0000"
 	}];
-	
+
 	res.status(200).render('testInformation', {
 		testName: "Dummy Test",
 		testPercent: "00",
@@ -129,10 +126,18 @@ app.get('/testinformation', function(req, res, next){
 	});
 });
 
+app.post('/createuser', function (req,res, next) {
+	console.log(req);
+	if (req) {
+		cts.create_userA(con, req.body.user_name, req.body )
+	}
+})
+
 app.get('*', function (req, res, next){
 	// if requested routing does not exist, serve 404 page through handlebars
 	res.status(404).render('404');
 });
+
 
 //////End///////////////--File Hosting--///////////////////////////////////////////////
 
