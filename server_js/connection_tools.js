@@ -179,4 +179,15 @@ methods.update_answer = function(con, user_name, question_id, color_chosen, corr
 };
 
 
+methods.get_colorcount = function(con, hex_code, next_func, passed_variables){
+	var sql = "SELECT red_count, orange_count, yellow_count, green_count, blue_count from Color WHERE hex_code='"+hex_code+"';";
+
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		next_func(result, passed_variables);
+	});
+}
+
+
+
 module.exports = methods;

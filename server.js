@@ -61,16 +61,11 @@ app.get('/home', function(req, res, next){
 	});
 });
 
-app.get('/color', function(req, res, next){
+app.get('/color/:hex_code', function(req, res, next){
 	// set our default page to index.html, served through handlebars
-	res.status(200).render('color', {
-		color: "#ff0000",
-		redValue: "99",
-		orangeValue: "1",
-		yellowValue: "0",
-		greenValue: "0",
-		blueValue: "0"
-	});
+	var hex_code = req.params.hex_code;
+
+	cts.get_colorcount(con, hex_code, color_count_return, [req, res, hex_code, next]);
 	
 });
 
@@ -233,6 +228,27 @@ function answer_question_p2(content, passed_variables){
 	else{
 		cts.new_answer(con, passed_variables[2], passed_variables[3], passed_variables[4], passed_variables[5]);
 	}
+}
+
+
+
+function color_count_return(content, passed_variables){
+	
+	if(content.length == 0){
+		passed_variables[1].status(404).render('404');
+	} else {
+		passed_variables[1].status(200).render('color', {
+			color: "#" + passed_variables[2],
+			redValue: content[0].red_count,
+			orangeValue: content[0].orange_count,
+			yellowValue: content[0].yellow_count,
+			greenValue: content[0].green_count,
+			blueValue: content[0].blue_count
+		});
+	}
+	
+
+	
 }
 
 
