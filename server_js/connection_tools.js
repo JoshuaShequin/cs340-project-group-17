@@ -7,10 +7,10 @@ var methods = {};
 
 methods.create_connection = function(){
 	var con = mysql.createConnection({
-	  host: "127.0.0.1",
-	  user: "root",
-	  password: "root",
-	  database: "color_test_testing"
+		host: "classmysql.engr.oregonstate.edu",
+		user: "cs340_shequinj",
+		password: "9379",
+		database: "cs340_shequinj"
 	});
 	con.connect(function(err){
 		if (err) throw err;
@@ -19,7 +19,7 @@ methods.create_connection = function(){
 }
 
 methods.check_user_name = function(con, user, next_func, passed_variables){
-	var sql = "SELECT user_name FROM user WHERE user_name='"+user+"';";
+	var sql = "SELECT user_name FROM User WHERE user_name='"+user+"';";
 	con.query(sql, function(err, result){
 		if (err) throw err;
 		if (result.length == 0){
@@ -64,31 +64,33 @@ methods.check_password = function(con, user, pass, next_func, passed_variables){
 
 /* Create account connection_tool*/
 
-methods.create_userA = function (con, name, pass, date, sex) {
-	methods.check_user_name (con, name, methods.create_userB, [con,name,pass,date,sex]);
+methods.create_userA = function (res, con, name, pass, date, sex) {
+	methods.check_user_name (con, name, methods.create_userB, {"res":res, "con":con,"name":name,"pass":pass,"date":date,"sex":sex});
+};
 
-}
-
-methods.create_userB = function (exists, con, name, pass, date, sex) {
-
+methods.create_userB = function (exists, list) {
 	if (!exists) {
 		var sexI;
+		if 			(list.sex == 'male') 		sexI = 0;
+		else if (list.sex == 'female') 	sexI = 1;
+		else 														sexI = null;
 
-		if (sex == 'male') 				sexI = 0;
-		else if (sex == 'female') sexI = 1;
-		else 											sexI = NULL;
+		hash = bcrypt.hashSync(list.pass, saltRounds);
 
-		hash = bcrypt.hashSync(pass,saltRounds);
-		var sqlEnter =	"INSERT INTO 'User' ('user_name', 'credentials', 'birth_date', 'sex')\
-		VALUES ('" + name + "', '" + hash + "', '" + date + "', " + sexI + ");";
-
+		var sqlEnter =	"INSERT INTO User (user_name, credentials, birth_date, sex) " +
+											"VALUES ('" + list.name + "', '" + hash + "', '" + list.date + "', " + sexI + ");";
+		console.log(sqlEnter);
 		con.query(sqlEnter);
-		res.status(200.send("success"));
+
+		console.log("Sending success");
+		list.res.status(200).send("success");
+		console.log("Sent");
 	}
 	else {
-		res.status(200).send("exists");
+		console.log("INSERT failed; Username already exists");
+		list.res.status(200).send("exists");
 	}
-}
+};
 
 
 module.exports = methods;

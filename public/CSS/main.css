@@ -145,7 +145,7 @@ a {
 }
 
 
-#create-account-button {
+#new-account-button {
   color: #343434;
   cursor: pointer;
 }
@@ -191,8 +191,8 @@ a {
   height: 40px;
   width: 100px;
   position: absolute;
-  bottom: 20;
-  right: 20;
+  bottom: 20px;
+  right: 20px;
   cursor: pointer;
 }
 

@@ -18,15 +18,7 @@ function hideCreateAccountModal() {
 
 };
 
-// window.addEventListener('DOMContentLoaded', function () {
-//
-//   var createButton = document.getElementById('create-account-button');
-//
-//   createButton.addEventListener('click', sendData);
-// });
-
 function sendData() {
-  console.log("Click");
 	var oReq = new XMLHttpRequest();
 
 	oReq.addEventListener("load", serverListener);
@@ -54,13 +46,17 @@ function sendData() {
 };
 
 function serverListener () {
+  console.log(this);
   if (this.responseText == "success") {
     console.log("Success!");
+    alert("Account successfully created.");
+    hideCreateAccountModal();
   }
   else if (this.responseText == "exists") {
-    console.log("Error");
+    console.log("Username already exists.");
+    alert("Username already taken. Please enter a different name.");
   }
   else {
-    console.log("something fucky happened");
+    console.log("Error: " + this.responseText);
   }
 }

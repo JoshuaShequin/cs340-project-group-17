@@ -126,12 +126,16 @@ app.get('/testinformation', function(req, res, next){
 	});
 });
 
+/////////////////////////////////
 app.post('/createuser', function (req,res, next) {
-	console.log(req);
-	if (req) {
-		cts.create_userA(con, req.body.user_name, req.body )
+	console.log("\n== Attempting to create new user with following attributes");
+	console.log(req.body);
+	console.log("\n");
+	if (req.body) {
+		cts.create_userA(res, con, req.body.name, req.body.pass, req.body.date, req.body.sex);
 	}
-})
+});
+/////////////////////////////////
 
 app.get('*', function (req, res, next){
 	// if requested routing does not exist, serve 404 page through handlebars
