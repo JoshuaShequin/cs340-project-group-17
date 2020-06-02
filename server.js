@@ -58,6 +58,12 @@ app.get('/home', function(req, res, next){
 	});
 });
 
+app.get('/color', function(req, res, next){
+	// set our default page to index.html, served through handlebars
+	res.status(200).render('colorsearch');
+	
+});
+
 app.get('/color/:hex_code', function(req, res, next){
 	// set our default page to index.html, served through handlebars
 	var hex_code = req.params.hex_code;
