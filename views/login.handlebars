@@ -1,4 +1,4 @@
-{{!-- 
+<!--
 verifyNewAccout.js
 class: Login-Container
 id: Login-Button
@@ -9,9 +9,11 @@ class Modal-Error-Dialog
 class: Modal-Header
 class: Modal-Footer
 class: Modal-Exit-Button
- --}}
-<script src="/verifyNewAccount.js" charset="utf-8" defer></script>
-<script src="/login.js" charset="utf-8" defer></script>
+
+<script src="./login.js" charset="utf-8" defer></script>
+<script src="./createUser.js" charset="utf-8" defer></script>
+<link rel="stylesheet" type="text/css" href="../public/CSS/main.css" defer>
+
 <div class="page-title">
 	<span>Login</span>
 </div>
@@ -20,15 +22,16 @@ class: Modal-Exit-Button
     <div class="login-container">
         <Label for="useranme"><b>Username</b></Label>
         <input type="text" id="username-input" placeholder="Enter username...">
-        
+
         <Label for="password"><b>Password</b></Label>
         <input type="text" id="password-input" placeholder="Enter password...">
-        
+
         <button type="button" id="login-button">Login</button>
+        <button type="button" onclick="showCreateAccountModal();" id="new-account-button">Create New Account</button>
 
     </div>
 </div>
-{{!-- Display a modal if the user gets the username or password wrong --}}
+<!-- Display a modal if the user gets the username or password wrong -->
 <div id="modal-backdrop" class="hidden"></div>
 <div id="create-login-error-modal" class="hidden">
     <div class="modal-error-dialog">
@@ -39,4 +42,47 @@ class: Modal-Exit-Button
     <div class="modal-footer">
         <button type="button" class="modal-exit-button">Exit</button>
     </div>
+</div>
+
+
+<!-- New Account modals -->
+
+<div id="create-account-modal" class="hidden">
+	<button id="create-account-exit" onclick="hideCreateAccountModal();">X</button>
+	<div id=create-account-title>
+		Create New Account
+	</div>
+
+  <form id="create-account-form">
+		<div class="create-account-entry">
+	  	<label for="username"><b>Username</b></label>
+	    <input type="text" name="username" id="username-input" placeholder="Enter username...">
+		</div>
+
+
+		<div class="create-account-entry">
+	  	<label for="username"><b>Password</b></label>
+	    <input type="text" name="password" id="password-input" placeholder="Enter password...">
+		</div>
+
+		<div class="create-account-entry">
+      <label for="sex"><b>Sex</b></label>
+
+      <input type="radio" id="male" name="sex" value="male">
+			<label for="male"> Male </label>
+
+			<input type="radio" id="female" name="sex" value="female">
+			<label for="female"> Female </label>
+
+			<input type="radio" id="other" name="sex" value="NULL" default>
+			<label for="other"> Other </label>
+		</div>
+
+		<div class="create-account-entry">
+      <label for="date"><b>Birthdate</b></label>
+      <input type="date" name="date" id="password-input">
+		</div>
+
+        <button type="button" id="create-account-button" onclick="sendData();">Create</button>
+    </form>
 </div>
