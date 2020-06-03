@@ -5,13 +5,31 @@ function setCookie(cname, cvalue, exdays) {
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
+function deleteUser() {
+	// DELETE the user account.
+	console.log("DELETING USER ACCOUNT");
+	
+	user_name = getCookie('user_name');
+	var oReq = new XMLHttpRequest();
+	oReq.addEventListener("load", function(){});
+	oReq.open("POST", "/deleteAccount");
+
+	var post_contents = {
+		user_name: user_name,
+	};
+
+	var requestBody = JSON.stringify(post_contents);
+	oReq.setRequestHeader('Content-Type', 'application/json');
+	oReq.send(requestBody);
+	
+	window.location.replace("/");
+}
+
 function showCreateTestModal() {
 
   var showSomethingModal = document.getElementById('create-test-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
 
   showSomethingModal.classList.remove('hidden');
-  modalBackdrop.classList.remove('hidden');
 
 };
 
@@ -20,32 +38,26 @@ function hideModals() {
   var showSomethingModal = document.getElementById('create-test-modal');
   var showSomethingModal2 = document.getElementById('manage-user-modal');
   var showSomethingModal3 = document.getElementById('manage-test-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
 
   showSomethingModal.classList.add('hidden');
   showSomethingModal2.classList.add('hidden');
   showSomethingModal3.classList.add('hidden');
-  modalBackdrop.classList.add('hidden');
 
 };
 
 function showManageUserModal() {
 
   var showSomethingModal = document.getElementById('manage-user-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
 
   showSomethingModal.classList.remove('hidden');
-  modalBackdrop.classList.remove('hidden');
 
 };
 
 function showManageTestModal() {
 
   var showSomethingModal = document.getElementById('manage-test-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
 
   showSomethingModal.classList.remove('hidden');
-  modalBackdrop.classList.remove('hidden');
 
 };
 
@@ -80,5 +92,8 @@ window.addEventListener('DOMContentLoaded', function () {
 	
 	var logoutButton = document.getElementById('logout-button');
 	logoutButton.addEventListener('click', logout);
+	
+	var deleteUserButton = document.getElementById('delete-user-button');
+	deleteUserButton.addEventListener('click', deleteUser);
 	
 });
