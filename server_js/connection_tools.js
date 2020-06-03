@@ -7,10 +7,14 @@ var methods = {};
 
 methods.create_connection = function(){
 	var con = mysql.createConnection({
-	  host: "127.0.0.1",
-	  user: "root",
-	  password: "root",
-	  database: "color_test_testing"
+	  host: "classmysql.engr.oregonstate.edu",
+	  user: "cs340_shequinj",
+	  password: "9379",
+	  database: "cs340_shequinj"
+	  /*host: "classmysql.engr.oregonstate.edu",
+	  user: "cs340_bruckerl",
+	  password: "4091",
+	  database: "cs340_bruckerl"*/
 	});
 	con.connect(function(err){
 		if (err) throw err;
@@ -28,6 +32,17 @@ methods.check_user_name = function(con, user, next_func, passed_variables){
 		else next_func(true, passed_variables);
 	});
 
+}
+
+methods.alter_username = function(con, user, pass, olduser){
+	console.log("\n Got inside alter_username");
+	hash = bcrypt.hashSync(pass, saltRounds);
+	var sql = 'Update User SET user_name="'+user+'" WHERE user_name="'+olduser+'";';
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		console.log(result);
+	});
+	console.log("\n " + sql);
 }
 
 methods.update_password = function(con, user, pass){

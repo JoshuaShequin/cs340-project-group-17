@@ -82,6 +82,10 @@ app.get('/createaccount', function(req, res, next){
 	res.status(200).render('createaccount');
 });
 
+app.get('/editaccount', function(req, res, next){
+	res.status(200).render('editaccount');
+});
+
 app.get('/createtest', function(req, res, next){
 
 	res.status(200).render('createtests');
@@ -176,6 +180,27 @@ app.post('/createuser', function (req,res, next) {
 	}
 });
 /////////////////////////////////
+
+app.post('/alterUsername', function (req, res, next){
+	console.log("\n== Attempting to give existing user the following username");
+	console.log(req.body);
+	console.log("\n");
+	if (req.body) {
+		console.log("\n Got inside if statement");
+		cts.alter_username(con, req.body.name, req.body.pass, req.body.oldname);
+		console.log("\n Got after cts call");
+	}
+});
+
+app.post('/alterPassword', function (req, res, next){
+	console.log("\n== Attempting to give existing user the following password");
+	console.log(req.body);
+	console.log("\n");
+	if (req.body) {
+		cts.update_password(con, req.body.oldname, req.body.pass);
+	}
+});
+
 
 app.get('*', function (req, res, next){
 	// if requested routing does not exist, serve 404 page through handlebars
