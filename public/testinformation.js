@@ -32,6 +32,8 @@ function submitAnswer(){
 		var requestBody = JSON.stringify(post_contents);
 		oReq.setRequestHeader('Content-Type', 'application/json');
 		oReq.send(requestBody);
+		
+		hideModals();
 	}
 };
 
