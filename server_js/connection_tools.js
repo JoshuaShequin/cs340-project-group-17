@@ -7,10 +7,10 @@ var methods = {};
 
 methods.create_connection = function(){
 	var con = mysql.createConnection({
-	  host: "classmysql.engr.oregonstate.edu",
-	  user: "cs340_shequinj",
-	  password: "9379",
-	  database: "cs340_shequinj"
+	  host: "127.0.0.1",
+	  user: "root",
+	  password: "root",
+	  database: "color_test_testing"
 	});
 	con.connect(function(err){
 		if (err) throw err;
@@ -217,6 +217,11 @@ methods.create_userB = function (exists, list) {
 		console.log("INSERT failed; Username already exists");
 		list.res.status(200).send("exists");
 	}
+};
+
+methods.delete_user = function(con, user_name){
+	sql = "DELETE FROM User WHERE user_name='"+user_name+"';";
+	con.query(sql);
 };
 
 
