@@ -71,6 +71,12 @@ app.get('/color/:hex_code', function(req, res, next){
 	cts.get_colorcount(con, hex_code, color_count_return, [req, res, hex_code, next]);
 });
 
+app.post('/deleteAccount', function(req, res, next){
+	if (req.body && req.body.user_name){
+		cts.delete_user(con, req.body.user_name);
+	};
+});
+
 app.get('/createaccount', function(req, res, next){
 	// set our default page to index.html, served through handlebars
 	res.status(200).render('createaccount');

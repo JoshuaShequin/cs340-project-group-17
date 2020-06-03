@@ -25,15 +25,18 @@ if (user_name == '' || pass == ''){
 else{
 
 	function reqListener(){
+		console.log(window.location.pathname);
 		if (this.responseText == "Login successful!"){
 			// login successfull, do nothing unless this is the login page(see login page)
 			if (window.location.pathname == "/"){
 				window.location.replace("/home");
 			};
 		}
-		else{
-			console.log("GOING BACK TO LOGIN");
-			window.location.replace("/"); // change this to the correct URL when hosted.
+		else {
+			if (window.location.pathname != "/"){
+				console.log("GOING BACK TO LOGIN");
+				window.location.replace("/"); // change this to the correct URL when hosted.
+			};
 		};
 	}
 
