@@ -116,6 +116,11 @@ app.get('/managetest', function(req, res, next){
 	res.status(200).render('managetest');
 });
 
+app.get('/managetest/:test_ID', function(req, res, next){
+
+	res.status(200).render('managetest');
+});
+
 app.get('/manageuser', function(req, res, next){
 
 	res.status(200).render('login');
