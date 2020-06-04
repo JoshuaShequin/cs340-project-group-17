@@ -294,12 +294,20 @@ methods.find_popular_tests = function(con, next_func, passed_variables) {
 
 // find recent taken by user tests
 methods.find_recent_tests_taken = function(con, user_name, next_func, passed_variables) {
+
+	// SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count
+	// FROM Test
+	// INNER JOIN takes ON Test.test_ID=takes.test_ID 
+	// INNER JOIN  User ON takes.user_name=User.user_name
+	// WHERE (User.user_name = 'INSERT_USERNAME')
+	// ORDER BY takes.date_taken DESC;
+
 	// based on the username
-	var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count " +
+	var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
 	"FROM Test " + 
-	"INNER JOIN takes ON Test.test_ID==takes.test_ID " +
-	"INNER JOIN  User ON takes.user_name==User.user_name " +
-	"WHERE (User.user_name == "+user_name+")" +
+	"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
+	"INNER JOIN  User ON takes.user_name=User.user_name " +
+	"WHERE (User.user_name='"+user_name+"')" +
 	"ORDER BY takes.date_taken DESC";
 	con.query(sql, function(err, result) {
 		if (err) throw err;
@@ -309,9 +317,9 @@ methods.find_recent_tests_taken = function(con, user_name, next_func, passed_var
 
 // find recent tests made
 methods.find_recent_tests_made = function(con, next_func, passed_variables) {
-	var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count " +
+	var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
 	"FROM Test " + 
-	"INNER JOIN takes ON Test.test_ID==takes.test_ID " +
+	"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
 	"ORDER BY takes.date_taken DESC";
 	con.query(sql, function(err, result) {
 		if (err) throw err;
