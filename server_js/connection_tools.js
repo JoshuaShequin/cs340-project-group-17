@@ -240,5 +240,16 @@ methods.get_tests = function(con, user_name, next_func, passed_variables){
 	});
 };
 
+methods.update_test_information = function(con, user_name, test_id, test_name, test_summary){
+	sql = "UPDATE test SET name='"+test_name+"' WHERE test_id="+test_id+" AND user_name='"+user_name+"';";
+	sql2 = "UPDATE test SET summary='"+test_summary+"' WHERE test_id="+test_id+" AND user_name='"+user_name+"';";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+	con.query(sql2, function(err, result){
+		if (err) throw err;
+	});
+};
+
 
 module.exports = methods;

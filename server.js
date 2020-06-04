@@ -122,17 +122,16 @@ app.get('/managetest/:user_name', function(req, res, next){
 });
 
 app.get('/managetest/:user_name/:test_ID', function(req, res, next){
-	dummyData = [{
-		questionNum: "1",
-		questionHexCode: "ff0000",
-		question_id: "1"
-	}];
 	
-	res.status(200).render('managetest_specific', {
-		testName: "BLAH",
-		testSummary: "BLAH BLAH BLAH",
-		questions: dummyData
-	});
+	var user_name = req.params.user_name;
+	var test_ID = req.params.test_ID;
+	cts.get_test_information(con, test_ID, render_specific_manage_test, [req, res, test_ID]);
+});
+
+app.post('/changetestinfo', function(req, res, next){
+	if (req.body && req.body.user_name && req.body.test_ID && req.body.test_name && req.body.test_summary){
+		cts.update_test_information(con, req.body.user_name, req.body.test_ID, req.body.test_name, req.body.test_summary);
+	};
 });
 
 app.get('/manageuser', function(req, res, next){
@@ -357,6 +356,29 @@ function render_manage_tests(content, passed_variables){
 	
 	passed_variables[1].status(200).render('managetest', {
 		yourTests: content
+	});
+};
+
+function render_specific_manage_test(content, passed_variables){
+	// got the test information.
+	passed_variables.push(content[0].name)
+	passed_variables.push(content[0].summary)
+	cts.get_questions(con, passed_variables[2], render_specific_manage_test2, passed_variables)
+};
+
+function render_specific_manage_test2(content, passed_variables){
+	// got the questions on the test and render the page.
+	
+	for (var i = 0; i < content.length; i++){
+		content[i].questionNum = i+1,
+		content[i].questionHexCode = content[i].hex_code,
+		content[i].question_id = content[i].question_ID
+	}
+	
+	passed_variables[1].status(200).render('managetest_specific', {
+		testName: passed_variables[3],
+		testSummary: passed_variables[4],
+		questions: content
 	});
 };
 
