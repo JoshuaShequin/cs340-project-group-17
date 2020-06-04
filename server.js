@@ -122,8 +122,17 @@ app.get('/managetest/:user_name', function(req, res, next){
 });
 
 app.get('/managetest/:user_name/:test_ID', function(req, res, next){
-
-	res.status(200).render('managetest_specific');
+	dummyData = [{
+		questionNum: "1",
+		questionHexCode: "ff0000",
+		question_id: "1"
+	}];
+	
+	res.status(200).render('managetest_specific', {
+		testName: "BLAH",
+		testSummary: "BLAH BLAH BLAH",
+		questions: dummyData
+	});
 });
 
 app.get('/manageuser', function(req, res, next){
