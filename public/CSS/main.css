@@ -316,3 +316,11 @@ a {
 .password-input {
   text-align: center;
 }
+table, th, td {
+  border: 1px solid black;
+}
+.find-tests-results {
+  background-color: lightblue;
+}
+
+

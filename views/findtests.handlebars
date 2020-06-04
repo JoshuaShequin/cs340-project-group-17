@@ -29,9 +29,21 @@
 
 	</div>
 	<section id="find-tests-results">
+		<table stype="width:100%">
+			<caption>Tests Found</caption>
+		<tr>
+			{{!-- insert headers here --}}
+			<th>Test ID</th>
+			<th>Summary</th>
+			<th>Number of Questions</th>
+			<th>Name</th>
+			<th>Username</th>
+		</tr>
 		{{#each findTest}}
 			{{> findTestsInfoTemplate}}
 		{{/each}}
+		</table>
+		
 	</section>
 
 </div>
