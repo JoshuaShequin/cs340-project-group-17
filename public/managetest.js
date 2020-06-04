@@ -52,6 +52,7 @@ function update_test_information(){
 	var requestBody = JSON.stringify(body_contents);
 	oReq.setRequestHeader('Content-Type', 'application/json');
 	oReq.send(requestBody);
+	window.location.replace('/managetest/'+user_name+"/")
 
 }
 
