@@ -10,11 +10,22 @@
 
 	<div class="find-color-selection">
 
-		<span>Contains color: </span><input type="color" class="color-search-input-box"></input>
+		{{!-- <span>Contains color: </span><input type="color" class="color-search-input-box"></input>
 		<span>Name contains text: </span><input class="title-search-input-box" type="text"></input>
-		<span>Summary contains text: </span><input class="summary-search-input-box" type="text"></input>
+		<span>Summary contains text: </span><input class="summary-search-input-box" type="text"></input> --}}
+		{{!-- added stuff --}}
+		<span>Test ID: </span><input id="test-id-search-input-box" type="text"></input>
+		<span>Summary: </span><input id="test-summary-search-input-box" type="text"></input>
+		<span>Number of Questions: </span><input id="test-number-of-questions-search-input-box" type="text"></input>
+		<span>Name: </span><input id="test-name-search-input-box" type="text"></input>
+		<span>Username: </span><input id="test-username-search-input-box" type="text"></input>
 
-		<button type="button" class="find-tests-button">Search</button>
+
+		<button type="button" id="find-tests-button">Search</button>
+		<button type="button" id="find-recent-tests-taken-button">Recent Tests Taken</button>
+		<button type="button" id="find-recent-tests-made-button">Recent Tests Made</button>
+
+
 
 	</div>
 	<section id="find-tests-results">
