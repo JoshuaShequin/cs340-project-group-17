@@ -362,7 +362,7 @@ SERVER_PORT = process.env.PORT; // this is the port that the server will listen 
 
 if (SERVER_PORT == undefined){
 	// If the PORT variable does not exist, default to port 7721
-	SERVER_PORT = 7721;
+	SERVER_PORT = 1337;
 }
 
 app.listen(SERVER_PORT, function (){
