@@ -6,21 +6,10 @@ function setCookie(cname, cvalue, exdays) {
 }
 
 
-
-function showCreateTestModal() {
-
-  var showSomethingModal = document.getElementById('create-test-modal');
-
-  showSomethingModal.classList.remove('hidden');
-
-};
-
 function hideModals() {
 
-  var showSomethingModal = document.getElementById('create-test-modal');
   var showSomethingModal3 = document.getElementById('manage-test-modal');
 
-  showSomethingModal.classList.add('hidden');
   showSomethingModal3.classList.add('hidden');
 
 };
@@ -42,10 +31,6 @@ function logout(){
 
 window.addEventListener('DOMContentLoaded', function () {
 	
-	var createTestButton = document.getElementsByClassName('create-test-button')[0];
-	if (createTestButton) {
-		createTestButton.addEventListener('click', showCreateTestModal);
-	};
 	
 	var createTestButton = document.getElementsByClassName('Manage-Test-Button')[0];
 	if (createTestButton) {
