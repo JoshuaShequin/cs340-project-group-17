@@ -1,0 +1,35 @@
+<script src="/managetest.js" charset="utf-8" defer></script>
+
+<div class="page-title">
+	<span>Manage Tests</span>
+</div>
+
+<div class="page-content">
+	<div id="name-of-test-container">
+		<label for="tname">Test Name:</label>
+		<textarea id="tname" name="tname" rows="1" cols="50">{{testName}}</textarea>
+	</div>
+	
+	<div id="summary-of-test-container">
+		<label for="tsummary">Test Summary:</label>
+		<textarea id="tsummary" name="tsummary" rows="5" cols="100">{{testSummary}}</textarea>
+	</div>
+	<div id="questions-on-test-container">
+		<h3>Questions:</h3>
+		<section id="find-tests-results">
+			{{#each questions}}
+				{{> manageTestQuestionTemplate}}
+			{{/each}}
+		</section>
+	</div>
+	<br>
+	<div id="new-question-input">
+		<span>Color</span><input type="color" class="color-input-box"></input>
+		<button type="submit" id="new-question-button">New Question</button>
+	</div>
+	<br>
+	<br>
+	<button type="submit" id="submit-test-button">Submit Changes</button>
+	<button type="submit" id="delete-test-button">Delete Test</button>
+	
+</div>
