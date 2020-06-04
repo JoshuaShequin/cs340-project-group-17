@@ -6,22 +6,6 @@ function setCookie(cname, cvalue, exdays) {
 }
 
 
-function hideModals() {
-
-  var showSomethingModal3 = document.getElementById('manage-test-modal');
-
-  showSomethingModal3.classList.add('hidden');
-
-};
-
-function showManageTestModal() {
-
-  var showSomethingModal = document.getElementById('manage-test-modal');
-
-  showSomethingModal.classList.remove('hidden');
-
-};
-
 function logout(){
 	setCookie("user_name",'', 5);
 	setCookie("pass", '', 5);
@@ -30,17 +14,6 @@ function logout(){
 
 
 window.addEventListener('DOMContentLoaded', function () {
-	
-	
-	var createTestButton = document.getElementsByClassName('Manage-Test-Button')[0];
-	if (createTestButton) {
-		createTestButton.addEventListener('click', showManageTestModal);
-	};
-	
-	var modalHideButtons = document.getElementsByClassName('modal-hide-button');
-	for (var i = 0; i < modalHideButtons.length; i++) {
-		modalHideButtons[i].addEventListener('click', hideModals);
-	}
 	
 	var logoutButton = document.getElementById('logout-button');
 	logoutButton.addEventListener('click', logout);
