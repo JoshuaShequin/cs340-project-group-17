@@ -13,6 +13,11 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
 
 con = cts.create_connection();
+con.on('error', function(err){
+	if (err.code === "PROTOCOL_CONNECTION_LOST"){
+		con = cts.create_connection();
+	}
+});
 
 //////Start/////////////--File Hosting--///////////////////////////////////////////////
 
