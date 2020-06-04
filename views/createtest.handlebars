@@ -1,0 +1,43 @@
+<script src="./createTest.js" charset="utf-8" defer></script>
+<!-- <script src="../public/createTest.js" charset="utf-8" defer></script> -->
+<!-- <link rel="stylesheet" type="text/css" href="../public/CSS/main.css" defer> -->
+
+<div class="page-title">
+	<span>Create Test</span>
+</div>
+
+<div class="page-content">
+    <form id="create-test-form" name="create-test-form">
+        <label for="test-name-input">Test name</label>
+        <input type="text" id="test-name-input" name="testName" placeholder="Enter test name">
+
+        <label for="test-summary-input">Test Summary</label>
+        <textarea type="text" id="test-summary-input" name="testSummary" placeholder="Give a summary of this test..."></textarea>
+
+        <label for="question-num-input">Number of questions</label>
+        <input type="number" id="question-num-input" name="testNum" min="1" max="10" placeholder="Enter the number of questions">
+
+        <button type="button" id="create-test-button" onclick="enterCreateQuestionModal();">Create test</button>
+
+    </form>
+</div>
+
+
+<!-- Enter question modal -->
+
+<div id="modal-backdrop" class="hidden"></div>
+
+<div id="create-question-modal" class="hidden">
+    <button id="create-question-exit" onclick="exitCreateQuestionModal();">X</button>
+	  <div id=create-question-title>
+		    Create New Test
+	  </div>
+    <p id="question-num"></p>
+    <form id="create-question-form" name="create-question-form">
+    		<div id="create-question-entry">
+      	  	<label for="color-input">Choose question color:</label>
+      	    <input type="color" name="colorInput" id="color-input">
+    		</div>
+        <button type="button" id="create-question-button" onclick="enterColor();">Enter Color</button>
+    </form>
+</div>
