@@ -232,5 +232,13 @@ methods.delete_user = function(con, user_name){
 	con.query(sql);
 };
 
+methods.get_tests = function(con, user_name, next_func, passed_variables){
+	sql = "SELECT * FROM test WHERE user_name='"+user_name+"';"
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		next_func(result, passed_variables);
+	});
+};
+
 
 module.exports = methods;
