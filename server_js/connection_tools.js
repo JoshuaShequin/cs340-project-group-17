@@ -7,14 +7,14 @@ var methods = {};
 
 methods.create_connection = function(){
 	var con = mysql.createConnection({
-	  host: "127.0.0.1",
-	  user: "root",
-	  password: "root",
-	  database: "color_test_testing"
-	  /*host: "classmysql.engr.oregonstate.edu",
-	  user: "cs340_bruckerl",
-	  password: "4091",
-	  database: "cs340_bruckerl"*/
+	//   host: "127.0.0.1",
+	//   user: "root",
+	//   password: "root",
+	//   database: "color_test_testing"
+	  host: "classmysql.engr.oregonstate.edu",
+	  user: "cs340_condreab",
+	  password: "Yoshi40@@",
+	  database: "cs340_condreab"
 	});
 	con.connect(function(err){
 		if (err) throw err;
@@ -232,5 +232,91 @@ methods.delete_user = function(con, user_name){
 	con.query(sql);
 };
 
+// a universal find_test_ID from various parameters (additive)
+methods.find_test_id = function(con, test_ID, summary, number_of_questions, name, user_name, next_func, passed_variables) {
+	// create sql queries for all, in the case which user can decide how to search
+	var sql = "SELECT test_ID FROM Test WHERE testID="+toString(test_ID)+";";
+	var sql2 = "SELECT test_ID FROM Test LIKE summary=%"+summary+"%;";
+	var sql3 = "SELECT test_ID FROM Test WHERE number_of_questions="+toString(number_of_questions)+";";
+	var sql4 = "SELECT test_ID FROM Test WHERE name="+name+";";
+	var sql5 = "SELECT test_ID FROM Test WHERE user_name="+user_name+";";
+
+	let complete_set = new Set();
+
+	// test id
+	if (test_ID) {
+		con.query(sql, function(err, result) {
+			if (err) throw err;
+			result.forEach(complete_set.add, complete_set);
+		});
+	};
+	// summary
+	if (summary) {
+		con.query(sql2, function (err, result) {
+			if (err) throw err;
+			result.forEach(complete_set.add, complete_set);
+		});
+	};
+	// number of questions 
+	if (number_of_questions) {
+		con.query(sql3, function(err, result) {
+			if (err) throw err;
+			result.forEach(complete_set.add, complete_set);
+		})
+	};
+	// name
+	if (number_of_questions) {
+		con.query(sql4, function(err, result) {
+			if (err) throw err;
+			result.forEach(complete_set.add, complete_set);
+		})
+	};
+	// user_name
+	if (number_of_questions) {
+		con.query(sql5, function(err, result) {
+			if (err) throw err;
+			result.forEach(complete_set.add, complete_set);
+		})
+	};
+	next_func([...complete_set], passed_variables);
+};
+
+// popular test all tests
+methods.find_popular_tests = function(con, next_func, passed_variables) {
+	var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count " +
+	"FROM Test " +
+	"ORDER BY taken_count DESC";
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+		next_func(result, passed_variables);
+	});
+}
+
+// find recent taken by user tests
+methods.find_recent_tests_taken = function(con, user_name, next_func, passed_variables) {
+	// based on the username
+	var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count " +
+	"FROM Test " + 
+	"INNER JOIN takes ON Test.test_ID==takes.test_ID " +
+	"INNER JOIN  User ON takes.user_name==User.user_name " +
+	"WHERE (User.user_name == "+user_name+")" +
+	"ORDER BY takes.date_taken DESC";
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+		next_func(result, passed_variables);
+	})
+}
+
+// find recent tests made
+methods.find_recent_tests_made = function(con, next_func, passed_variables) {
+	var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count " +
+	"FROM Test " + 
+	"INNER JOIN takes ON Test.test_ID==takes.test_ID " +
+	"ORDER BY takes.date_taken DESC";
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+		next_func(result, passed_variables);
+	})
+}
 
 module.exports = methods;
