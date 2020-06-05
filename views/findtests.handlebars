@@ -1,4 +1,6 @@
-<script src="./findtests.js" charset="utf-8" defer></script>
+<script src="findTestTemplate.js" charset="utf-8" defer></script>
+<script src="findtests.js" charset="utf-8" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.js"></script>
 
 <div class="page-title">
 	<span>
@@ -29,9 +31,21 @@
 
 	</div>
 	<section id="find-tests-results">
+		<table stype="width:100%">
+			<caption>Tests Found</caption>
+		<tr>
+			{{!-- insert headers here --}}
+			<th>Test ID</th>
+			<th>Summary</th>
+			<th>Number of Questions</th>
+			<th>Name</th>
+			<th>Username</th>
+		</tr>
 		{{#each findTest}}
-			{{> findTestsInfoTemplate}}
+			{{> findTestColumn}}
 		{{/each}}
+		</table>
+		
 	</section>
 
 </div>
