@@ -122,11 +122,21 @@ app.post('/findtests', function(req, res, next){
 
 });
 
-
-
 app.get('/managetest', function(req, res, next){
 
 	res.status(200).render('managetest');
+});
+
+app.get('/managetest/:user_name', function(req, res, next){
+	
+	var user_name = req.params.user_name;
+	
+	cts.get_tests(con, user_name, render_manage_tests, [req, res]);
+});
+
+app.get('/managetest/:user_name/:test_ID', function(req, res, next){
+
+	res.status(200).render('managetest_specific');
 });
 
 app.get('/manageuser', function(req, res, next){
@@ -345,6 +355,21 @@ function test_table_render(content, passed_variables) {
 		findTest: content
 	});
 }
+function render_manage_tests(content, passed_variables){
+	
+	//transform content in to correct object style
+	for (var i = 0; i < content.length; i++){
+		content[i].testName = content[i].name,
+		content[i].testSumm = content[i].summary,
+		content[i].test_id = content[i].test_ID
+	}
+	
+	
+	passed_variables[1].status(200).render('managetest', {
+		yourTests: content
+	});
+};
+
 
 
 //////End///////////////--server function--///////////////////////////////////////////////

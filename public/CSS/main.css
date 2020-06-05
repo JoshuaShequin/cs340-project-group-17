@@ -324,3 +324,26 @@ table, th, td {
 }
 
 
+
+.Your-Tests-Results-Inner{
+	display: flex;
+	align-items: center;
+	justify-content: left;
+}
+
+.findTestsResult-contents{
+	display: flex;
+	align-items: center;
+	justify-content: left;
+}
+
+.test-name{
+	display: flex;
+	font-size: 25px;
+	margin: 0px 5px 0px 5px;
+}
+.test-partial-summary{
+	display: flex;
+	font-size: 15px;
+	margin: 0px 5px 0px 5px;
+}
