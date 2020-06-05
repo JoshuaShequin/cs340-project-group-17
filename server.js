@@ -97,16 +97,29 @@ app.get('/createtest', function(req, res, next){
 });
 
 app.get('/findtests', function(req, res, next){
+	res.status(200).render('findtests');
+});
 
-	dummyTestList = [{
-		testName: "Dummy Test",
-		testSumm: "Dummy Summary",
-		test_id: "1"
-	}];
+app.post('/findtests', function(req, res, next){
+	/*
+	search_query = {
+		test_ID: test_ID,
+		summary: summary,
+		number_of_questions: number_of_questions,
+		name: name,
+		user_name: user_name
+	};
+	*/
+	var test_ID = req.body.test_ID;
+	var summary = req.body.summary;
+	var number_of_questions = req.body.number_of_questions;
+	var name = req.body.name;
+	var user_name = req.body.user_name;
+	
+	console.log("== SERVER: req values: ", test_ID, summary, number_of_questions, name, user_name);
 
-	res.status(200).render('findtests', {
-		findTest: dummyTestList
-	});
+	cts.find_test_id(con, test_ID, summary, number_of_questions, name, user_name, test_table_render, [req, res]);
+
 });
 
 
@@ -325,6 +338,13 @@ function alter_password_2(content, passed_variables){
 		passed_variables[1].send("error");
 	}
 };
+
+function test_table_render(content, passed_variables) {
+	console.log("==SERVER: test_table_render content: ", content);
+	passed_variables[1].status(200).render('findtests', {
+		findTest: content
+	});
+}
 
 
 //////End///////////////--server function--///////////////////////////////////////////////

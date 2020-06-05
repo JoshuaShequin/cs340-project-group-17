@@ -1,4 +1,6 @@
-<script src="./findtests.js" charset="utf-8" defer></script>
+<script src="findTestTemplate.js" charset="utf-8" defer></script>
+<script src="findtests.js" charset="utf-8" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.js"></script>
 
 <div class="page-title">
 	<span>
@@ -40,7 +42,7 @@
 			<th>Username</th>
 		</tr>
 		{{#each findTest}}
-			{{> findTestsInfoTemplate}}
+			{{> findTestColumn}}
 		{{/each}}
 		</table>
 		
