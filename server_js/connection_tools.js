@@ -251,5 +251,43 @@ methods.update_test_information = function(con, user_name, test_id, test_name, t
 	});
 };
 
+methods.delete_test = function(con, user_name, test_id){
+	sql = "DELETE FROM Test WHERE user_name='"+user_name+"' AND test_id="+test_id+";";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.delete_question = function(con, question_ID){
+	sql = "DELETE FROM question WHERE question_ID="+question_ID+";";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.check_and_make_color = function(con, hex_code, next_func, passed_variables){
+	sql = "SELECT * FROM color WHERE hex_code='"+hex_code+"';";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		if(result.length == 0){
+			sql2 = "INSERT INTO color (hex_code) values('"+hex_code+"');";
+			con.query(sql2, function(err, result){
+				if (err) throw err;
+				next_func(result, passed_variables);
+			});
+		}
+		else{
+			next_func(result, passed_variables);
+		};
+	});
+};
+
+methods.new_question = function(con, hex_code, test_ID){
+	sql = "INSERT INTO question (hex_code, test_ID) VALUES ('"+hex_code+"', "+test_ID+");";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+};
+
 
 module.exports = methods;

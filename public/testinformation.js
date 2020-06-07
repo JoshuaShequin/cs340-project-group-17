@@ -46,7 +46,7 @@ function showQuestionModal() {
 
 	// get objects and set values
 	var questionNumberSpan = document.getElementById('question-number-span');
-	questionNumberSpan.innerHTML = "Question #" + content_of_button[0];
+	questionNumberSpan.innerHTML = "Question #" + content_of_button[2];
 	var questionColor = document.getElementById('color-container');
 	questionColor.style = "background-color:"+content_of_button[1]+"; width: 100px; height: 100px;"
 	var showSomethingModal = document.getElementById('answer-question-modal');
@@ -55,7 +55,7 @@ function showQuestionModal() {
 	user_name = getCookie('user_name');
 	var oReq = new XMLHttpRequest();
 	oReq.addEventListener("load", showAnswerInformation);
-	oReq.open("GET", "/testinformation/"+user_name+"/"+content_of_button[2]);
+	oReq.open("GET", "/testinformation/"+user_name+"/"+content_of_button[0]);
 
 	var get_contents = {
 		user_name: user_name,
@@ -74,6 +74,7 @@ function showAnswerInformation(){
 	if (info.length != 0){
 		if (info[0] == "A"){
 			selectColor(info[1]-1)
+			console.log("ALREADY ANSWERED");
 		}
 		else if(info[0] == "F"){
 			deselectAllColors();
