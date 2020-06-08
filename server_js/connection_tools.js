@@ -133,10 +133,8 @@ methods.get_correct_color = function(con, question_ID, next_func, passed_variabl
 	con.query(sql2, function(err, result){
 		if (err) throw err;
 		var sql = "SELECT * from Color WHERE hex_code='"+result[0].hex_code+"';";
-		console.log(sql);
 		con.query(sql, function(err, result){
 			if (err) throw err;
-			console.log(result);
 			red_count = result[0].red_count;
 			orange_count = result[0].orange_count;
 			yellow_count = result[0].yellow_count;
