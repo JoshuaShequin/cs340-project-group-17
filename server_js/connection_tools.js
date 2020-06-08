@@ -260,7 +260,7 @@ methods.find_test_id = function(con, test_ID, summary, number_of_questions, name
 			if (x == 1 || x == 3 || x == 4) {
 				sql = (succ_para ? 
 					sql+(parameter_string_list[x]+" LIKE '%"+paramter_value_list[x]+"%' AND ") : 
-					sql+(parameter_string_list[x]+" LIKE '"+paramter_value_list[x]+"'"));
+					sql+(parameter_string_list[x]+" LIKE '%"+paramter_value_list[x]+"%'"));
 			}
 			else {
 				sql = (succ_para ? 
