@@ -46,6 +46,7 @@ app.post('/enterlogin', function(req, res, next){
 });
 
 app.get('/home', function(req, res, next){
+	//console.log(req);
 	//set our default page to index.html, served through handlebars
 	cts.find_all_tests(con, "NULL", render_all_tests, [req,res]);
 });
