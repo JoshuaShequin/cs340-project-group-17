@@ -218,7 +218,7 @@ methods.create_userB = function (exists, list) {
 
 		var sqlEnter =	"INSERT INTO User (user_name, credentials, birth_date, sex) " +
 											"VALUES ('" + list.name + "', '" + hash + "', '" + list.date + "', " + sexI + ");";
-		con.query(sqlEnter);
+		list.con.query(sqlEnter);
 
 		list.res.status(200).send("success");
 	}
@@ -456,6 +456,55 @@ methods.get_tests = function(con, user_name, next_func, passed_variables){
 	con.query(sql, function(err, result){
 		if (err) throw err;
 		next_func(result, passed_variables);
+	});
+};
+
+methods.update_test_information = function(con, user_name, test_id, test_name, test_summary){
+	sql = "UPDATE test SET name='"+test_name+"' WHERE test_id="+test_id+" AND user_name='"+user_name+"';";
+	sql2 = "UPDATE test SET summary='"+test_summary+"' WHERE test_id="+test_id+" AND user_name='"+user_name+"';";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+	con.query(sql2, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.delete_test = function(con, user_name, test_id){
+	sql = "DELETE FROM Test WHERE user_name='"+user_name+"' AND test_id="+test_id+";";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.delete_question = function(con, question_ID){
+	sql = "DELETE FROM question WHERE question_ID="+question_ID+";";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.check_and_make_color = function(con, hex_code, next_func, passed_variables){
+	sql = "SELECT * FROM color WHERE hex_code='"+hex_code+"';";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		if(result.length == 0){
+			sql2 = "INSERT INTO color (hex_code) values('"+hex_code+"');";
+			con.query(sql2, function(err, result){
+				if (err) throw err;
+				next_func(result, passed_variables);
+			});
+		}
+		else{
+			next_func(result, passed_variables);
+		};
+	});
+};
+
+methods.new_question = function(con, hex_code, test_ID){
+	sql = "INSERT INTO question (hex_code, test_ID) VALUES ('"+hex_code+"', "+test_ID+");";
+	con.query(sql, function(err, result){
+		if (err) throw err;
 	});
 };
 

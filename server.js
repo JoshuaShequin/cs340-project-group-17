@@ -12,12 +12,18 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
 
-con = cts.create_connection();
-con.on('error', function(err){
-	if (err.code === "PROTOCOL_CONNECTION_LOST"){
-		con = cts.create_connection();
-	}
-});
+var con;
+
+
+function handleError(){
+	con = cts.create_connection();
+	con.on('error', function(err){
+		if (err.code === "PROTOCOL_CONNECTION_LOST"){
+			handleError();
+		}
+	});
+};
+handleError()
 
 //////Start/////////////--File Hosting--///////////////////////////////////////////////
 
@@ -134,8 +140,34 @@ app.get('/managetest/:user_name', function(req, res, next){
 });
 
 app.get('/managetest/:user_name/:test_ID', function(req, res, next){
+	
+	var user_name = req.params.user_name;
+	var test_ID = req.params.test_ID;
+	cts.get_test_information(con, test_ID, render_specific_manage_test, [req, res, test_ID]);
+});
 
-	res.status(200).render('managetest_specific');
+app.post('/changetestinfo', function(req, res, next){
+	if (req.body && req.body.user_name && req.body.test_ID && req.body.test_name && req.body.test_summary){
+		cts.update_test_information(con, req.body.user_name, req.body.test_ID, req.body.test_name, req.body.test_summary);
+	};
+});
+
+app.post('/deletetest', function(req, res, next){
+	if (req.body && req.body.user_name && req.body.test_ID){
+		cts.delete_test(con, req.body.user_name, req.body.test_ID);
+	};
+});
+
+app.post('/deletequestion', function(req, res, next){
+	if (req.body && req.body.question_ID){
+		cts.delete_question(con, req.body.question_ID);
+	};
+});
+
+app.post('/createquestion', function(req, res, next){
+	if (req.body && req.body.test_ID && req.body.hex_code){
+		cts.check_and_make_color(con, req.body.hex_code, create_question_2, [req, res, req.body.hex_code, req.body.test_ID]);
+	};
 });
 
 app.get('/manageuser', function(req, res, next){
@@ -371,6 +403,33 @@ function render_manage_tests(content, passed_variables){
 function render_all_tests(content, passed_variables) {
 	passed_variables[1].status(200).render('index',content);
 }
+function render_specific_manage_test(content, passed_variables){
+	// got the test information.
+	passed_variables.push(content[0].name)
+	passed_variables.push(content[0].summary)
+	cts.get_questions(con, passed_variables[2], render_specific_manage_test2, passed_variables)
+};
+
+function render_specific_manage_test2(content, passed_variables){
+	// got the questions on the test and render the page.
+	
+	for (var i = 0; i < content.length; i++){
+		content[i].questionNum = i+1,
+		content[i].questionHexCode = content[i].hex_code,
+		content[i].question_id = content[i].question_ID
+	}
+	
+	passed_variables[1].status(200).render('managetest_specific', {
+		testName: passed_variables[3],
+		testSummary: passed_variables[4],
+		questions: content
+	});
+};
+
+function create_question_2(content, passed_variables){
+	cts.new_question(con, passed_variables[2], passed_variables[3]);
+};
+
 
 
 //////End///////////////--server function--///////////////////////////////////////////////
