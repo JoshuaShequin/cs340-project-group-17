@@ -58,5 +58,21 @@ window.addEventListener('DOMContentLoaded', function () {
 		modalHideButtons[i].addEventListener('click', hideModals);
 	}
 
+	// make it able to login on enter key
+	var input = document.getElementById("username-input");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("login-button").click();
+		}
+	});
+	var input = document.getElementById("password-input");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("login-button").click();
+		}
+	});
+
 });
 
