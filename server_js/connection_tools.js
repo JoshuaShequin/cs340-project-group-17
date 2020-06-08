@@ -369,7 +369,7 @@ methods.find_popular_tests = function(con, next_func, passed_variables) {
 }
 
 // find recent taken by user tests
-methods.find_recent_tests_taken = function(con, user_name, next_func, passed_variables) {
+methods.find_recent_tests_taken_by_user = function(con, user_name, next_func, passed_variables) {
 
 	// SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count
 	// FROM Test
@@ -392,13 +392,60 @@ methods.find_recent_tests_taken = function(con, user_name, next_func, passed_var
 	})
 }
 
-// find recent tests made
-methods.find_recent_tests_made = function(con, next_func, passed_variables) {
+// nested queries for 3 different tables...
+methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
+	var search_query = {
+		recentTests: [],
+		popularTests: [],
+		yourTests: []
+	};
+	let complete_set = new Set();
+	// popular tests
 	var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
+	"FROM Test "
+	"ORDER BY test.taken_count DESC";
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+		// add popular tests
+		console.log("==SQL results:", result);
+		search_query.popularTests = result;
+		// most recent tests created
+		var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
+		"FROM Test " + 
+		"ORDER BY Test.test_ID ASC";
+		con.query(sql, function(err, result) {
+			if (err) throw err;
+			// add your tests
+			console.log("==SQL results:", result);
+			search_query.yourTests = result;;
+			// tests recently taken by user
+			var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
+			"FROM Test " + 
+			"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
+			"INNER JOIN  User ON takes.user_name=User.user_name " +
+			"WHERE (User.user_name='"+user_name+"') " +
+			"ORDER BY takes.date_taken DESC";
+			con.query(sql, function(err, result) {
+				if (err) throw err;
+				// add your tests
+				console.log("==SQL results:", result);
+				search_query.recentTests = result;
+
+				var result_formatted = JSON.parse(JSON.stringify(search_query));
+				//console.log("Complete set", complete_set);
+				console.log("==SQL results:", result_formatted);
+				next_func(result_formatted, passed_variables);
+			})
+		})
+	})
+}
+
+methods.find_recent_tests_taken_by_user = function(con, user_name, next_func, passed_variables) {
+	var sql2 = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
 	"FROM Test " + 
 	"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
 	"ORDER BY takes.date_taken DESC";
-	con.query(sql, function(err, result) {
+	con.query(sql2, function(err, result) {
 		if (err) throw err;
 		next_func(result, passed_variables);
 	})
