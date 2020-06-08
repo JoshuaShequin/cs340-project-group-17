@@ -55,14 +55,16 @@ window.addEventListener('DOMContentLoaded', function () {
 	}
   
   // load in the server info and insert it into the page
-  send_search_data();
+  //send_search_data();
 
 });
 
 function send_search_data() {
   var oReq = new XMLHttpRequest();
   user_name = getCookie('user_name');
-  oReq.open("GET", "/home/"+user_name);
+  oReq.open("GET", "/home");
+  console.log("==CLIENT:", user_name);
+  oReq.send(user_name);
   /*
   test_ID, summary, number_of_questions, name, user_name
   */
@@ -75,5 +77,4 @@ function send_search_data() {
   // var requestBody = JSON.stringify(search_query);
   // oReq.setRequestHeader('Content-Type', 'application/json');
   // console.log("==request body", requestBody);
-  oReq.send();
 };

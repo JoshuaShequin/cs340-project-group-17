@@ -46,27 +46,9 @@ app.post('/enterlogin', function(req, res, next){
 });
 
 app.get('/home', function(req, res, next){
+	//console.log(req);
 	//set our default page to index.html, served through handlebars
-	dummyRecentTests = [{
-		name: "Most Recent Test",
-		summary: "Blah blah blah",
-		test_ID: "1"
-	}];
-	dummyPopularTests = [{
-		name: "Most popular test",
-		summary: "Blah blah blah",
-		test_ID: "1"
-	}];
-	dummyYourTests = [{
-		name: "Most Recent Test",
-		summary: "Blah blah blah",
-		test_ID: "1"
-	}];
-	res.status(200).render('index', {
-		recentTests: dummyRecentTests,
-		popularTests: dummyPopularTests,
-		yourTests: dummyYourTests
-	});
+	cts.find_all_tests(con, "NULL", render_all_tests, [req,res]);
 });
 
 app.get('/home/:user_name', function(req, res, next){

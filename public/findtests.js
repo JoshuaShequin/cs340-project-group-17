@@ -105,7 +105,7 @@ window.addEventListener('DOMContentLoaded', function() {
 			document.getElementById("find-tests-button").click();
 		}
 	});
-    var input = document.getElementById("test-name-search-input-bo");
+    var input = document.getElementById("test-name-search-input-box");
 	input.addEventListener("keyup", function(event) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
