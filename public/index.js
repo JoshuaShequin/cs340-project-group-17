@@ -57,6 +57,7 @@ function send_search_data() {
   var oReq = new XMLHttpRequest();
   user_name = getCookie('user_name');
   oReq.open("GET", "/home/"+user_name);
+  oReq.send();
   /*
   test_ID, summary, number_of_questions, name, user_name
   */
@@ -69,5 +70,4 @@ function send_search_data() {
   // var requestBody = JSON.stringify(search_query);
   // oReq.setRequestHeader('Content-Type', 'application/json');
   // console.log("==request body", requestBody);
-  oReq.send();
 };

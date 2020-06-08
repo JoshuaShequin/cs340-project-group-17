@@ -403,7 +403,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 	// popular tests
 	var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
 	"FROM Test "
-	"ORDER BY test.taken_count DESC";
+	"ORDER BY test.taken_count DESC LIMIT 5";
 	con.query(sql, function(err, result) {
 		if (err) throw err;
 		// add popular tests
@@ -412,7 +412,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 		// most recent tests created
 		var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
 		"FROM Test " + 
-		"ORDER BY Test.test_ID ASC";
+		"ORDER BY Test.test_ID ASC LIMIT 5";
 		con.query(sql, function(err, result) {
 			if (err) throw err;
 			// add your tests
@@ -424,7 +424,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 			"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
 			"INNER JOIN  User ON takes.user_name=User.user_name " +
 			"WHERE (User.user_name='"+user_name+"') " +
-			"ORDER BY takes.date_taken DESC";
+			"ORDER BY takes.date_taken DESC LIMIT 5";
 			con.query(sql, function(err, result) {
 				if (err) throw err;
 				// add your tests
