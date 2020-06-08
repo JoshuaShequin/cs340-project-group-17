@@ -109,22 +109,22 @@ app.get('/createtest', function(req, res, next){
 });
 
 app.get('/findtests', function(req, res, next){
-
-
 	res.status(200).render('findtests');
 });
 
 app.post('/findtests', function(req, res, next){
-	var test_ID = req.body.test_ID;
-	var summary = req.body.summary;
-	var number_of_questions = req.body.number_of_questions;
-	var name = req.body.name;
-	var user_name = req.body.user_name;
+	if (req.body && (req.body.test_ID || req.body.summary || req.body.number_of_questions || req.body.name || req.body.user_name)) {
+
+		var test_ID = req.body.test_ID;
+		var summary = req.body.summary;
+		var number_of_questions = req.body.number_of_questions;
+		var name = req.body.name;
+		var user_name = req.body.user_name;
+		
+		console.log("== SERVER: req values: ", test_ID, summary, number_of_questions, name, user_name);
 	
-	console.log("== SERVER: req values: ", test_ID, summary, number_of_questions, name, user_name);
-
-	cts.find_test_id(con, test_ID, summary, number_of_questions, name, user_name, test_table_render, [req, res]);
-
+		cts.find_test_id(con, test_ID, summary, number_of_questions, name, user_name, test_table_render, [req, res]);
+	}
 });
 
 app.get('/managetest', function(req, res, next){
