@@ -34,14 +34,14 @@ window.addEventListener('DOMContentLoaded', function () {
 	input.addEventListener("keyup", function(event) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
-			document.getElementById("login-button").click();
+			document.getElementById("newpasswordsubmit").click();
 		}
 	});
-	var input = document.getElementById("newpasswordsubmit");
+	var input = document.getElementById("password-input");
 	input.addEventListener("keyup", function(event) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
-			document.getElementById("login-button").click();
+			document.getElementById("newpasswordsubmit").click();
 		}
 	});
 });
