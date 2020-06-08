@@ -84,6 +84,41 @@ window.addEventListener('DOMContentLoaded', function() {
     if (findRecentMadeTestButton) {
         findRecentMadeTestButton.addEventListener('click', get_recent_made_tests);
     }
+    var input = document.getElementById("test-id-search-input-box");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("find-tests-button").click();
+		}
+	});
+    var input = document.getElementById("test-summary-search-input-box");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("find-tests-button").click();
+		}
+	});
+    var input = document.getElementById("test-number-of-questions-search-input-box");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("find-tests-button").click();
+		}
+	});
+    var input = document.getElementById("test-name-search-input-bo");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("find-tests-button").click();
+		}
+	});
+    var input = document.getElementById("test-username-search-input-box");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("find-tests-button").click();
+		}
+	});
 });
 
 function clearSearch() {
