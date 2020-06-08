@@ -30,14 +30,14 @@ window.addEventListener('DOMContentLoaded', function () {
 	var deleteUserButton = document.getElementById('delete-user-button');
   deleteUserButton.addEventListener('click', deleteUser);
   
-	var input = document.getElementById("newusernamesubmit");
+	var input = document.getElementById("newusernamebox");
 	input.addEventListener("keyup", function(event) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
-			document.getElementById("newpasswordsubmit").click();
+			document.getElementById("newusernamesubmit").click();
 		}
 	});
-	var input = document.getElementById("password-input");
+	var input = document.getElementById("newpasswordbox");
 	input.addEventListener("keyup", function(event) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
