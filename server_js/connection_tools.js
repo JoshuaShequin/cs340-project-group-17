@@ -417,7 +417,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 			if (err) throw err;
 			// add your tests
 			console.log("==SQL results:", result);
-			search_query.yourTests = result;;
+			search_query.recentTests = result;;
 			// tests recently taken by user
 			var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
 			"FROM Test " + 
@@ -429,7 +429,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 				if (err) throw err;
 				// add your tests
 				console.log("==SQL results:", result);
-				search_query.recentTests = result;
+				search_query.yourTests = result;
 
 				var result_formatted = JSON.parse(JSON.stringify(search_query));
 				//console.log("Complete set", complete_set);
