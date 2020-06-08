@@ -218,7 +218,7 @@ methods.create_userB = function (exists, list) {
 
 		var sqlEnter =	"INSERT INTO User (user_name, credentials, birth_date, sex) " +
 											"VALUES ('" + list.name + "', '" + hash + "', '" + list.date + "', " + sexI + ");";
-		con.query(sqlEnter);
+		list.con.query(sqlEnter);
 
 		list.res.status(200).send("success");
 	}
