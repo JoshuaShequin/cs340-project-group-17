@@ -234,7 +234,7 @@ methods.delete_user = function(con, user_name){
 
 // a universal find_test_ID from various parameters (additive)
 methods.find_test_id = function(con, test_ID, summary, number_of_questions, name, user_name, next_func, passed_variables) {
-	console.log("Find_test_id arguments:", test_ID, summary, number_of_questions, name, user_name);
+	//console.log("Find_test_id arguments:", test_ID, summary, number_of_questions, name, user_name);
 	// var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count FROM Test WHERE test_ID='"+test_ID+"';";
 	// var sql2 = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count  FROM Test WHERE summary LIKE '%"+summary+"%';";
 	// var sql3 = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count  FROM Test WHERE number_of_questions='"+number_of_questions+"';";
@@ -243,7 +243,7 @@ methods.find_test_id = function(con, test_ID, summary, number_of_questions, name
 	// create sql queries for all, in the case which user can decide how to search
 	paramter_value_list = [test_ID, summary, number_of_questions, name, user_name];
 	parameter_string_list = ["test_ID", "summary", "number_of_questions", "name", "user_name"];
-	console.log(paramter_value_list);
+	//console.log(paramter_value_list);
 	var sql = "";
 	let complete_set = new Set();
 
@@ -277,7 +277,7 @@ methods.find_test_id = function(con, test_ID, summary, number_of_questions, name
 		var result_formatted = JSON.parse(JSON.stringify(result));
 		result_formatted.forEach(complete_set.add, complete_set);
 		//console.log("Complete set", complete_set);
-		console.log("==SQL results:", [...complete_set]);
+		//console.log("==SQL results:", [...complete_set]);
 		next_func([...complete_set], passed_variables);
 		// console.log("== CLIENT: complete_set: ", [...complete_set]);
 	})
@@ -387,7 +387,7 @@ methods.find_recent_tests_taken_by_user = function(con, user_name, next_func, pa
 	"ORDER BY takes.date_taken DESC";
 	con.query(sql, function(err, result) {
 		if (err) throw err;
-		console.log("==SQL results:", result);
+		//console.log("==SQL results:", result);
 		next_func(result, passed_variables);
 	})
 }
@@ -407,7 +407,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 	con.query(sql, function(err, result) {
 		if (err) throw err;
 		// add popular tests
-		console.log("==SQL results:", result);
+		//console.log("==SQL results:", result);
 		search_query.popularTests = result;
 		// most recent tests created
 		var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
@@ -416,7 +416,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 		con.query(sql, function(err, result) {
 			if (err) throw err;
 			// add your tests
-			console.log("==SQL results:", result);
+			//console.log("==SQL results:", result);
 			search_query.recentTests = result;;
 			// tests recently taken by user
 			var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
@@ -428,12 +428,12 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 			con.query(sql, function(err, result) {
 				if (err) throw err;
 				// add your tests
-				console.log("==SQL results:", result);
+				c//onsole.log("==SQL results:", result);
 				search_query.yourTests = result;
 
 				var result_formatted = JSON.parse(JSON.stringify(search_query));
 				//console.log("Complete set", complete_set);
-				console.log("==SQL results:", result_formatted);
+				//console.log("==SQL results:", result_formatted);
 				next_func(result_formatted, passed_variables);
 			})
 		})

@@ -53,7 +53,7 @@ app.get('/home', function(req, res, next){
 
 app.get('/home/:user_name', function(req, res, next){
 	//set our default page to index.html, served through handlebars
-	console.log("== SERVER: req values: ", req.params.user_name);
+	//console.log("== SERVER: req values: ", req.params.user_name);
 	cts.find_all_tests(con, req.params.user_name, render_all_tests, [req,res]);
 });
 
@@ -103,7 +103,7 @@ app.post('/findtests', function(req, res, next){
 		var name = req.body.name;
 		var user_name = req.body.user_name;
 		
-		console.log("== SERVER: req values: ", test_ID, summary, number_of_questions, name, user_name);
+		//console.log("== SERVER: req values: ", test_ID, summary, number_of_questions, name, user_name);
 	
 		cts.find_test_id(con, test_ID, summary, number_of_questions, name, user_name, test_table_render, [req, res]);
 	}
@@ -363,7 +363,7 @@ function alter_password_2(content, passed_variables){
 };
 
 function test_table_render(content, passed_variables) {
-	console.log("==SERVER: content: ", content);
+	//console.log("==SERVER: content: ", content);
 
 	passed_variables[1].status(200).send(content);
 }

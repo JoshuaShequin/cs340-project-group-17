@@ -11,7 +11,7 @@ function send_search_data() {
     var name = document.getElementById('test-name-search-input-box').value;
     var user_name = document.getElementById('test-username-search-input-box').value;
 
-    console.log("==search querys", test_ID, summary, number_of_questions, name, user_name);
+    //console.log("==search querys", test_ID, summary, number_of_questions, name, user_name);
 
     search_query = {
         test_ID: test_ID,
@@ -20,18 +20,18 @@ function send_search_data() {
         name: name,
         user_name: user_name
     };
-    console.log("==CLIENT search query", search_query);
+    //console.log("==CLIENT search query", search_query);
 
 
 
     var requestBody = JSON.stringify(search_query);
     oReq.setRequestHeader('Content-Type', 'application/json');
-    console.log("==request body", requestBody);
+    //console.log("==request body", requestBody);
     oReq.send(requestBody);
 
     oReq.addEventListener('load', function (event) {
         var response_data = JSON.parse(event.target.response);
-        console.log("==CLIENT: server response:", response_data, response_data.length);
+        //console.log("==CLIENT: server response:", response_data, response_data.length);
         
         // remove past
         var table = document.getElementById("find-test-table");
