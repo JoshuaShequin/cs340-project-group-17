@@ -175,6 +175,14 @@ app.get('/testinformation/:test_id', function(req, res, next){
 	cts.get_questions(con, test_id, test_information_render_p1, [req, res, test_id]);
 });
 
+app.post('/taketest', function(req, res, next){
+	
+	if(req.body && req.body.user_name && req.body.test_id){
+		cts.take_test(con, req.body.user_name, req.body.test_id);
+	};
+	
+});
+
 /*
 app.get('/testinformation', function(req, res, next){
 	dummyQuestionList = [{
@@ -213,6 +221,7 @@ app.get('/testinformation/:user_name/:question_id', function(req, res, next){
 	var question_id = req.params.question_id;
 	
 	cts.get_answer_information(con, user_name, question_id, relay_question_information, [req, res]);
+	
 });
 
 

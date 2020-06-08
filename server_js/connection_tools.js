@@ -289,5 +289,25 @@ methods.new_question = function(con, hex_code, test_ID){
 	});
 };
 
+methods.take_test = function(con, user_name, test_id){
+	sql = "SELECT * from takes WHERE user_name='"+user_name+"' AND test_ID="+test_id+";";
+	var date_ob = new Date();
+	date = "'" + date_ob.getFullYear() + "-" + date_ob.getMonth() + "-" + date_ob.getDate() + "'";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		if (result.length == 0){
+			sql2 = "INSERT INTO takes (user_name, test_ID, date_taken) VALUES ('"+user_name+"', "+test_id+", "+date+");";
+			con.query(sql2, function(err, result){
+				if (err) throw err;
+			});
+		}
+		else{
+			sql2 = "UPDATE takes SET date_taken="+date+" WHERE user_name='"+user_name+"' AND test_ID="+test_id+";";
+			con.query(sql2, function(err, result){
+				if (err) throw err;
+			});
+		};
+	});
+};
 
 module.exports = methods;
