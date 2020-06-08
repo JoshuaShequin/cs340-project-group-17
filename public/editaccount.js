@@ -28,7 +28,22 @@ window.addEventListener('DOMContentLoaded', function () {
       });
 	  
 	var deleteUserButton = document.getElementById('delete-user-button');
-	deleteUserButton.addEventListener('click', deleteUser);
+  deleteUserButton.addEventListener('click', deleteUser);
+  
+	var input = document.getElementById("newusernamesubmit");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("login-button").click();
+		}
+	});
+	var input = document.getElementById("newpasswordsubmit");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("login-button").click();
+		}
+	});
 });
 
 function logout(){
