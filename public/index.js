@@ -37,7 +37,13 @@ function logout(){
 	window.location.replace("/");
 }
 
+function re_route_home(){
+	if (window.location.pathname=="/home"){
+		window.location.replace("/home/"+getCookie("user_name"));
+	};
+}
 
+re_route_home();
 window.addEventListener('DOMContentLoaded', function () {
 	
 	var logoutButton = document.getElementById('logout-button');
