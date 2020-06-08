@@ -1,4 +1,4 @@
-<script src="findTestTemplate.js" charset="utf-8" defer></script>
+<script src="findTestColumnTemplate.js" charset="utf-8" defer></script>
 <script src="findtests.js" charset="utf-8" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.js"></script>
 
@@ -24,14 +24,14 @@
 
 
 		<button type="button" id="find-tests-button">Search</button>
-		<button type="button" id="find-recent-tests-taken-button">Recent Tests Taken</button>
-		<button type="button" id="find-recent-tests-made-button">Recent Tests Made</button>
+		{{!-- <button type="button" id="find-recent-tests-taken-button">Recent Tests Taken</button>
+		<button type="button" id="find-recent-tests-made-button">Recent Tests Made</button> --}}
 
 
 
 	</div>
 	<section id="find-tests-results">
-		<table stype="width:100%">
+		<table id="find-test-table" stype="width:100%">
 			<caption>Tests Found</caption>
 		<tr>
 			{{!-- insert headers here --}}

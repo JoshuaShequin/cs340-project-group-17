@@ -46,27 +46,33 @@ app.post('/enterlogin', function(req, res, next){
 });
 
 app.get('/home', function(req, res, next){
-	// set our default page to index.html, served through handlebars
+	//set our default page to index.html, served through handlebars
 	dummyRecentTests = [{
-		testName: "Most Recent Test",
-		testSumm: "Blah blah blah",
-		test_id: "1"
+		name: "Most Recent Test",
+		summary: "Blah blah blah",
+		test_ID: "1"
 	}];
 	dummyPopularTests = [{
-		testName: "Most popular test",
-		testSumm: "Blah blah blah",
-		test_id: "1"
+		name: "Most popular test",
+		summary: "Blah blah blah",
+		test_ID: "1"
 	}];
 	dummyYourTests = [{
-		testName: "Most Recent Test",
-		testSumm: "Blah blah blah",
-		test_id: "1"
+		name: "Most Recent Test",
+		summary: "Blah blah blah",
+		test_ID: "1"
 	}];
 	res.status(200).render('index', {
 		recentTests: dummyRecentTests,
 		popularTests: dummyPopularTests,
 		yourTests: dummyYourTests
 	});
+});
+
+app.get('/home/:user_name', function(req, res, next){
+	//set our default page to index.html, served through handlebars
+	console.log("== SERVER: req values: ", req.params.user_name);
+	cts.find_all_tests(con, req.params.user_name, render_all_tests, [req,res]);
 });
 
 app.get('/color', function(req, res, next){
@@ -103,19 +109,12 @@ app.get('/createtest', function(req, res, next){
 });
 
 app.get('/findtests', function(req, res, next){
+
+
 	res.status(200).render('findtests');
 });
 
 app.post('/findtests', function(req, res, next){
-	/*
-	search_query = {
-		test_ID: test_ID,
-		summary: summary,
-		number_of_questions: number_of_questions,
-		name: name,
-		user_name: user_name
-	};
-	*/
 	var test_ID = req.body.test_ID;
 	var summary = req.body.summary;
 	var number_of_questions = req.body.number_of_questions;
@@ -382,10 +381,9 @@ function alter_password_2(content, passed_variables){
 };
 
 function test_table_render(content, passed_variables) {
-	console.log("==SERVER: test_table_render content: ", content);
-	passed_variables[1].status(200).render('findtests', {
-		findTest: content
-	});
+	console.log("==SERVER: content: ", content);
+
+	passed_variables[1].status(200).send(content);
 }
 function render_manage_tests(content, passed_variables){
 	
@@ -402,6 +400,9 @@ function render_manage_tests(content, passed_variables){
 	});
 };
 
+function render_all_tests(content, passed_variables) {
+	passed_variables[1].status(200).render('index',content);
+}
 function render_specific_manage_test(content, passed_variables){
 	// got the test information.
 	passed_variables.push(content[0].name)

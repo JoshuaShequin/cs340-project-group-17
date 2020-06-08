@@ -47,5 +47,27 @@ window.addEventListener('DOMContentLoaded', function () {
 	for (var i = 0; i < manage_tests_buttons.length; i++){
 		manage_tests_buttons[i].addEventListener('click', attach_url_to_manage_button);
 	}
-	
+  
+  // load in the server info and insert it into the page
+  send_search_data();
+
 });
+
+function send_search_data() {
+  var oReq = new XMLHttpRequest();
+  user_name = getCookie('user_name');
+  oReq.open("GET", "/home/"+user_name);
+  /*
+  test_ID, summary, number_of_questions, name, user_name
+  */
+  // console.log("==search querys", );
+  // search_query = {
+  //     user_name: user_name
+  // };
+  // console.log("==CLIENT search query", search_query);
+
+  // var requestBody = JSON.stringify(search_query);
+  // oReq.setRequestHeader('Content-Type', 'application/json');
+  // console.log("==request body", requestBody);
+  oReq.send();
+};
