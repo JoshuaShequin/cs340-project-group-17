@@ -34,8 +34,8 @@ function attach_url_to_manage_button(){
 };
 
 function update_test_information(){
-	var test_name = document.getElementById('tname').value.trim().replace(/[^a-zA-Z0-9]/g, "")
-	var test_summary = document.getElementById('tsummary').value.trim().replace(/[^a-zA-Z0-9]/g, "")
+	var test_name = document.getElementById('tname').value.trim().replace(/[^a-zA-Z0-9] /g, "")
+	var test_summary = document.getElementById('tsummary').value.trim().replace(/[^a-zA-Z0-9] /g, "")
 	
 	var user_name = getCookie("user_name");
 	var oReq = new XMLHttpRequest();
