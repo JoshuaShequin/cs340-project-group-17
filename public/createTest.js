@@ -50,13 +50,13 @@ function enterCreateQuestionModal () {
   testSummary     = testForm.elements.testSummary.value;
 
   // remove special characters that mess up server
-  testName = testName.replace(/[^a-zA-Z0-9]/g, "");
-  testSummary = testSummary.replace(/[^a-zA-Z0-9]/g, "");
+  contents.testName = contents.testName.replace(/[^a-zA-Z0-9]/g, "");
+  contents.testSummary = contents.testSummary.replace(/[^a-zA-Z0-9]/g, "");
 
-  console.log(testForm.elements.testName.value);
-  console.log(testForm.elements.testSummary.value);
-  console.log(testForm.elements.testNum.value);
-  console.log(testForm);
+  console.log(testName);
+  console.log(testSummary);
+  console.log(totalQuestion);
+  // console.log(testForm);
 
 
   if (totalQuestion == "" || testName == "" || testSummary == "") {
@@ -126,6 +126,10 @@ function sendTestData(colors) {
     colors      : colors,
     username    : user_name
   }
+
+  // remove special characters that mess up server
+  contents.testName = contents.testName.replace(/[^a-zA-Z0-9]/g, "");
+  contents.testSummary = contents.testSummary.replace(/[^a-zA-Z0-9]/g, "");
 
   console.log(contents);
 
