@@ -49,10 +49,6 @@ function enterCreateQuestionModal () {
   testName        = testForm.elements.testName.value;
   testSummary     = testForm.elements.testSummary.value;
 
-  // remove special characters that mess up server
-  contents.testName = contents.testName.replace(/[^a-zA-Z0-9]/g, "");
-  contents.testSummary = contents.testSummary.replace(/[^a-zA-Z0-9]/g, "");
-
   console.log(testName);
   console.log(testSummary);
   console.log(totalQuestion);
