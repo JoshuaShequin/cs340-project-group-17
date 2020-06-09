@@ -19,8 +19,8 @@ function setCookie(cname, cvalue, exdays) {
 
 function reqListener(){
 	if (this.responseText == "Login successful!"){
-		setCookie("user_name",document.getElementById('username-input').value.trim().replace(/[^a-zA-Z0-9]/g, ""), 5);
-		setCookie("pass", document.getElementById('password-input').value.trim().replace(/[^a-zA-Z0-9]/g, ""), 5);
+		setCookie("user_name",document.getElementById('username-input').value.trim().replace(/[^a-zA-Z0-9] /g, ""), 5);
+		setCookie("pass", document.getElementById('password-input').value.trim().replace(/[^a-zA-Z0-9] /g, ""), 5);
 		
 		window.location.replace("/home");
 	}
@@ -39,8 +39,8 @@ function hitLogin(){
 	oReq.open("POST", "/enterlogin");
 
 	var login_contents = {
-		user_name: document.getElementById('username-input').value.trim().replace(/[^a-zA-Z0-9]/g, ""),
-		pass: document.getElementById('password-input').value.trim().replace(/[^a-zA-Z0-9]/g, "")
+		user_name: document.getElementById('username-input').value.trim().replace(/[^a-zA-Z0-9] /g, ""),
+		pass: document.getElementById('password-input').value.trim().replace(/[^a-zA-Z0-9] /g, "")
 	};
 
 	var requestBody = JSON.stringify(login_contents);

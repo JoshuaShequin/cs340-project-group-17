@@ -1,5 +1,5 @@
 function searchReqListener(){
-	var colorinput = document.getElementById("searchbox").value.trim();
+	var colorinput = document.getElementById("searchbox").value.trim().replace(/[^a-zA-Z0-9] /g, "");
 	window.location.replace("/color/" + colorinput);
 }
 
