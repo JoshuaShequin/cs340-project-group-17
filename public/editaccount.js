@@ -98,8 +98,8 @@ function sendData( posttype ) {
     oReq.open("POST", posttype);
 
     /* var form = document.forms[0]; */
-    var newuserinput = document.getElementById("newusernamebox").value.trim();
-    var newpassinput = document.getElementById("newpasswordbox").value.trim();
+    var newuserinput = document.getElementById("newusernamebox").value.trim().replace(/[^a-zA-Z0-9]/g, "");
+    var newpassinput = document.getElementById("newpasswordbox").value.trim().replace(/[^a-zA-Z0-9]/g, "");
 
     var olduserinput = getCookie("user_name");
     var oldpassinput = getCookie("pass");
