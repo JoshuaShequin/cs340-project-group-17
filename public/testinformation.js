@@ -32,6 +32,8 @@ function submitAnswer(){
 		var requestBody = JSON.stringify(post_contents);
 		oReq.setRequestHeader('Content-Type', 'application/json');
 		oReq.send(requestBody);
+		
+		hideModals();
 	}
 };
 
@@ -44,17 +46,16 @@ function showQuestionModal() {
 
 	// get objects and set values
 	var questionNumberSpan = document.getElementById('question-number-span');
-	questionNumberSpan.innerHTML = "Question #" + content_of_button[0];
+	questionNumberSpan.innerHTML = "Question #" + content_of_button[2];
 	var questionColor = document.getElementById('color-container');
 	questionColor.style = "background-color:"+content_of_button[1]+"; width: 100px; height: 100px;"
 	var showSomethingModal = document.getElementById('answer-question-modal');
-	var modalBackdrop = document.getElementById('modal-backdrop');
   
 	// get answer information from site
 	user_name = getCookie('user_name');
 	var oReq = new XMLHttpRequest();
 	oReq.addEventListener("load", showAnswerInformation);
-	oReq.open("GET", "/testinformation/"+user_name+"/"+content_of_button[2]);
+	oReq.open("GET", "/testinformation/"+user_name+"/"+content_of_button[0]);
 
 	var get_contents = {
 		user_name: user_name,
@@ -65,7 +66,6 @@ function showQuestionModal() {
 	oReq.send(requestBody);
   
 	showSomethingModal.classList.remove('hidden');
-	modalBackdrop.classList.remove('hidden');
 
 };
 
@@ -74,6 +74,7 @@ function showAnswerInformation(){
 	if (info.length != 0){
 		if (info[0] == "A"){
 			selectColor(info[1]-1)
+			console.log("ALREADY ANSWERED");
 		}
 		else if(info[0] == "F"){
 			deselectAllColors();
@@ -130,15 +131,35 @@ function deselectAllColors(){
 	for (var i = 0; i < colors.length; i++){
 		colors[i].classList.remove('answer-selected');
 	}
-}
+};
+
+function update_take_test(){
+	var test_id = window.location.pathname.split("/")[2]
+	console.log(test_id);
+	
+	var answered_already = false;
+  
+	// get answer information from site
+	user_name = getCookie('user_name');
+	var oReq = new XMLHttpRequest();
+	oReq.addEventListener("load", showAnswerInformation);
+	oReq.open("POST", "/taketest");
+
+	var get_contents = {
+		user_name: user_name,
+		test_id: test_id
+	};
+
+	var requestBody = JSON.stringify(get_contents);
+	oReq.setRequestHeader('Content-Type', 'application/json');
+	oReq.send(requestBody);
+};
 
 function hideModals() {
 
   var showSomethingModal = document.getElementById('answer-question-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
 
   showSomethingModal.classList.add('hidden');
-  modalBackdrop.classList.add('hidden');
 
 };
 
@@ -162,3 +183,5 @@ window.addEventListener('DOMContentLoaded', function () {
 	submitButton.addEventListener('click', submitAnswer);
 	
 });
+
+update_take_test();

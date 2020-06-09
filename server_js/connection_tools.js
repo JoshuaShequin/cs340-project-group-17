@@ -7,10 +7,10 @@ var methods = {};
 
 methods.create_connection = function(){
 	var con = mysql.createConnection({
-	  host: "classmysql.engr.oregonstate.edu",
-	  user: "cs340_shequinj",
-	  password: "9379",
-	  database: "cs340_shequinj"
+	  host: "127.0.0.1",
+	  user: "root",
+	  password: "root",
+	  database: "color_test_testing"
 	});
 	con.connect(function(err){
 		if (err) throw err;
@@ -28,6 +28,14 @@ methods.check_user_name = function(con, user, next_func, passed_variables){
 		else next_func(true, passed_variables);
 	});
 
+}
+
+methods.alter_username = function(con, user, pass, olduser){
+	hash = bcrypt.hashSync(pass, saltRounds);
+	var sql = 'Update User SET user_name="'+user+'" WHERE user_name="'+olduser+'";';
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
 }
 
 methods.update_password = function(con, user, pass){
@@ -64,7 +72,7 @@ methods.check_password = function(con, user, pass, next_func, passed_variables){
 methods.increment_test_taken_count = function(con, test_id){
 	/*
 		Increments the taken_count column for a specific test identified by test_id.
-		
+
 		con, the connection object, expected to be connected already
 		test_id - the test_id of the test that is going to have its taken_count incremented
 	*/
@@ -116,19 +124,20 @@ methods.decrement_color_count = function(con, hex_code, color){
 }
 
 methods.get_correct_color = function(con, question_ID, next_func, passed_variables){
-	
+
 	var sql2 = "SELECT hex_code FROM Question WHERE question_ID="+question_ID+";";
 	con.query(sql2, function(err, result){
 		if (err) throw err;
-		var sql = "SELECT * from Color WHERE hex_code='"+result.hex_code+"';";
+		var sql = "SELECT * from Color WHERE hex_code='"+result[0].hex_code+"';";
 		con.query(sql, function(err, result){
 			if (err) throw err;
-			
-			red_count = result.red_count;
-			orange_count = result.orange_count;
-			yellow_count = result.yellow_count;
-			green_count = result.green_count;
-			blue_count = result.blue_count;
+
+			red_count = result[0].red_count;
+			orange_count = result[0].orange_count;
+			yellow_count = result[0].yellow_count;
+			green_count = result[0].green_count;
+			blue_count = result[0].blue_count;
+
 			correct_color = 1;
 			correct_color_value = 0;
 			counts = [red_count, orange_count, yellow_count, green_count, blue_count]
@@ -165,16 +174,16 @@ methods.update_answer = function(con, user_name, question_id, color_chosen, corr
 		con.query(sql3, function(err, result2){
 			methods.decrement_color_count(con, hex_code, result2[0].color_chosen);
 		});
-		
+
 		con.query(sql, function(err, result){
 			if (err) throw err;
 		});
-		
+
 		con.query(sql2, function(err, result){
 			if (err) throw err;
 			methods.increment_color_count(con, result[0].hex_code, color_chosen);
 		});
-		
+
 	});
 };
 
@@ -188,6 +197,86 @@ methods.get_colorcount = function(con, hex_code, next_func, passed_variables){
 	});
 }
 
+/* Create test tools */
+
+methods.create_test = function (res, con, req) {
+	var colors 			= req.body.colors;
+	var testName 		= req.body.testName;
+	var testSummary	= req.body.testSummary;
+	var testNum			= req.body.testNum;
+	var username		= req.body.username;
+
+	console.log("\nTESTS===================================\n");
+
+	var sqlCreate = "INSERT INTO Test (summary, number_of_questions, name, user_name) " +
+									"VALUES ('" + testSummary + "', '" + testNum + "', '" + testName + "', '" + username + "');";
+
+	console.log(sqlCreate);
+	var hey;
+	con.query(sqlCreate, function(err, result){
+		if (err) throw err;
+		create_test_testID (res, con, colors, username, testName);
+	});
+}
+
+// find the test id that was just created
+function create_test_testID (res, con, colors, username, testName) {
+	var sql = "SELECT `test_ID` FROM `Test` WHERE `user_name`='"+ username +"' AND `name`='"+ testName +"';";
+	console.log(sql);
+
+	for (i = 0; i < colors.length; i++) {
+		//remove extra character from front of string
+		colors[i] = colors[i].slice(1,colors[i].length);
+	}
+	con.query(sql, function (err, result) {
+		// using result[result.length - 1] pulls the most recent version
+		var test_ID = result[result.length - 1].test_ID;
+
+		search_test_colors(con, colors)
+		setTimeout(() => {
+			attachQuestions(con, res, colors, test_ID);
+		}, 600);
+	});
+}
+
+// run through all the colors
+async function search_test_colors (con,colors) {
+	console.log("\nCOLORS==================================\n");
+	for (let i = 0; i < colors.length; i++) {
+		await color_insert(con,colors[i]);
+	}
+}
+
+// query database
+async function color_insert (con, color) {
+	var sql = "INSERT INTO `Color` (`hex_code`) VALUES ('"+ color +"');";
+	console.log(sql);
+	await con.query(sql, function (err) {
+		if (err)
+			if (err.errno == 1062) 	console.log(color + " is already in database");		// if color is already in database
+			else 										console.log(err);																	// any other error
+
+		else {
+			// console.log(color + " entered into database");															// Success!
+			return 1;
+		}
+	});
+}
+
+// create the questions and attach foreign keys
+function attachQuestions(con,res,colors,test_ID) {
+	console.log("\nQUESTIONS===============================\n");
+	var sql = "INSERT INTO `Question` (`test_ID`,`hex_code`) VALUES ("+ test_ID +", '";
+	for (let i = 0; i < colors.length; i++) {
+		console.log(sql + colors[i]+"');");
+		con.query(sql + colors[i]+"');", function(err) {
+			if (err) console.log(err);
+		});
+	}
+	console.log("Questions entered");
+	res.status(200).send("Success");
+	console.log("\n==Test created==\n");
+}
 
 /* Create account connection_tool*/
 
@@ -206,17 +295,315 @@ methods.create_userB = function (exists, list) {
 
 		var sqlEnter =	"INSERT INTO User (user_name, credentials, birth_date, sex) " +
 											"VALUES ('" + list.name + "', '" + hash + "', '" + list.date + "', " + sexI + ");";
-		console.log(sqlEnter);
-		con.query(sqlEnter);
+		list.con.query(sqlEnter);
 
-		console.log("Sending success");
 		list.res.status(200).send("success");
-		console.log("Sent");
 	}
 	else {
-		console.log("INSERT failed; Username already exists");
 		list.res.status(200).send("exists");
 	}
+};
+
+methods.delete_user = function(con, user_name){
+	sql = "DELETE FROM User WHERE user_name='"+user_name+"';";
+	con.query(sql);
+};
+
+// a universal find_test_ID from various parameters (additive)
+methods.find_test_id = function(con, test_ID, summary, number_of_questions, name, user_name, next_func, passed_variables) {
+	console.log("Find_test_id arguments:", test_ID, summary, number_of_questions, name, user_name);
+	// var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count FROM Test WHERE test_ID='"+test_ID+"';";
+	// var sql2 = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count  FROM Test WHERE summary LIKE '%"+summary+"%';";
+	// var sql3 = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count  FROM Test WHERE number_of_questions='"+number_of_questions+"';";
+	// var sql4 = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count  FROM Test WHERE name='"+name+"';";
+	// var sql5 = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count  FROM Test WHERE user_name='"+user_name+"';";
+	// create sql queries for all, in the case which user can decide how to search
+	paramter_value_list = [test_ID, summary, number_of_questions, name, user_name];
+	parameter_string_list = ["test_ID", "summary", "number_of_questions", "name", "user_name"];
+	console.log(paramter_value_list);
+	var sql = "";
+	let complete_set = new Set();
+
+	for (x = 0; x < paramter_value_list.length; x++) {
+		if (paramter_value_list[x]) {
+			var succ_para = false;
+			// check if there are any parameters after, if there are, then add 'AND'
+			for (y = x+1; y < paramter_value_list.length; y++) {
+				if (paramter_value_list[y]) {
+					succ_para = true;
+				}
+			}
+			// if special case which we don't want string perfect queries
+			if (x == 1 || x == 3 || x == 4) {
+				sql = (succ_para ? 
+					sql+(parameter_string_list[x]+" LIKE '%"+paramter_value_list[x]+"%' AND ") : 
+					sql+(parameter_string_list[x]+" LIKE '%"+paramter_value_list[x]+"%'"));
+			}
+			else {
+				sql = (succ_para ? 
+					sql+(parameter_string_list[x]+"='"+paramter_value_list[x]+"' AND ") : 
+					sql+(parameter_string_list[x]+"='"+paramter_value_list[x]+"'"));
+			}
+		}
+	}
+	sql = "SELECT test_ID, summary, number_of_questions, name, user_name FROM Test WHERE "+sql;
+
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+		//console.log("Found username:", result);
+		var result_formatted = JSON.parse(JSON.stringify(result));
+		result_formatted.forEach(complete_set.add, complete_set);
+		//console.log("Complete set", complete_set);
+		console.log("==SQL results:", [...complete_set]);
+		next_func([...complete_set], passed_variables);
+		// console.log("== CLIENT: complete_set: ", [...complete_set]);
+	})
+
+
+	// var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count FROM Test WHERE" +
+	// (test_ID ? "test_ID = '"+test_ID+"' " : " ") +
+	// (summary ? "summary = '"+summary+"' " : " ") +
+	// (number_of_questions ? "number_of_questions = '"+number_of_questions+"' " : " ") +
+	// (name ? "name = '"+name+"' " : " ") +
+	// (user_name ? "user_name = '"+user_name+"' " : " ");
+
+	// let complete_set = new Set();
+	// con.query(sql, function(err, result) {
+	// 	if (err) throw err;
+	// 	//console.log("Found test_ID:", result);
+	// 	var result_formatted = JSON.parse(JSON.stringify(result));
+	// 	result_formatted.forEach(complete_set.add, complete_set);
+	// 	// console.log("Complete set", complete_set);
+	// 	console.log("==SQL results:", [...complete_set]);
+	// 	next_func([...complete_set], passed_variables);
+	// })
+
+
+	// // test id
+	// if (test_ID) {
+	// 	con.query(sql, function(err, result) {
+	// 		if (err) throw err;
+	// 		// console.log("Found test_ID:", result);
+	// 		var result_formatted = JSON.parse(JSON.stringify(result));
+	// 		result_formatted.forEach(complete_set.add, complete_set);
+	// 		// console.log("Complete set", complete_set);
+	// 	});
+	// };
+	// // summary
+	// if (summary) {
+	// 	console.log("Test:", sql2);
+	// 	con.query(sql2, function (err, result) {
+	// 		if (err) throw err;
+	// 		//console.log("Found summary:", result);
+	// 		var result_formatted = JSON.parse(JSON.stringify(result));
+	// 		result_formatted.forEach(complete_set.add, complete_set);
+	// 		//console.log("Complete set", complete_set);
+	// 	});
+	// };
+	// // number of questions 
+	// if (number_of_questions) {
+	// 	con.query(sql3, function(err, result) {
+	// 		if (err) throw err;
+	// 		//console.log("Found number of questions:", result);
+	// 		var result_formatted = JSON.parse(JSON.stringify(result));
+	// 		result_formatted.forEach(complete_set.add, complete_set);
+	// 		//console.log("Complete set", complete_set);
+	// 	})
+	// };
+	// // name
+	// if (name) {
+	// 	con.query(sql4, function(err, result) {
+	// 		if (err) throw err;
+	// 		//console.log("Found name:", result);
+	// 		var result_formatted = JSON.parse(JSON.stringify(result));
+	// 		result_formatted.forEach(complete_set.add, complete_set);
+	// 		//console.log("Complete set", complete_set);
+	// 	})
+	// };
+	// // user_name
+	// if (user_name) {
+	// 	con.query(sql5, function(err, result) {
+	// 		if (err) throw err;
+	// 		//console.log("Found username:", result);
+	// 		var result_formatted = JSON.parse(JSON.stringify(result));
+	// 		result_formatted.forEach(complete_set.add, complete_set);
+	// 		//console.log("Complete set", complete_set);
+	// 	})
+	// };
+	// console.log("==SQL results:", [...complete_set]);
+	// next_func([...complete_set], passed_variables);
+};
+
+// popular test all tests
+methods.find_popular_tests = function(con, next_func, passed_variables) {
+	var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count " +
+	"FROM Test " +
+	"ORDER BY taken_count DESC";
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+		next_func(result, passed_variables);
+	});
+}
+
+// find recent taken by user tests
+methods.find_recent_tests_taken_by_user = function(con, user_name, next_func, passed_variables) {
+
+	// SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count
+	// FROM Test
+	// INNER JOIN takes ON Test.test_ID=takes.test_ID 
+	// INNER JOIN  User ON takes.user_name=User.user_name
+	// WHERE (User.user_name = 'INSERT_USERNAME')
+	// ORDER BY takes.date_taken DESC;
+
+	// based on the username
+	var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
+	"FROM Test " + 
+	"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
+	"INNER JOIN  User ON takes.user_name=User.user_name " +
+	"WHERE (User.user_name='"+user_name+"')" +
+	"ORDER BY takes.date_taken DESC";
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+		console.log("==SQL results:", result);
+		next_func(result, passed_variables);
+	})
+}
+
+// nested queries for 3 different tables...
+methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
+	var search_query = {
+		recentTests: [],
+		popularTests: [],
+		yourTests: []
+	};
+	let complete_set = new Set();
+	// popular tests
+	var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
+	"FROM Test "
+	"ORDER BY test.taken_count DESC LIMIT 5";
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+		// add popular tests
+		console.log("==SQL results:", result);
+		search_query.popularTests = result;
+		// most recent tests created
+		var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
+		"FROM Test " + 
+		"ORDER BY Test.test_ID ASC LIMIT 5";
+		con.query(sql, function(err, result) {
+			if (err) throw err;
+			// add your tests
+			console.log("==SQL results:", result);
+			search_query.recentTests = result;;
+			// tests recently taken by user
+			var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
+			"FROM Test " + 
+			"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
+			"INNER JOIN  User ON takes.user_name=User.user_name " +
+			"WHERE (User.user_name='"+user_name+"') " +
+			"ORDER BY takes.date_taken DESC LIMIT 5";
+			con.query(sql, function(err, result) {
+				if (err) throw err;
+				// add your tests
+				console.log("==SQL results:", result);
+				search_query.yourTests = result;
+
+				var result_formatted = JSON.parse(JSON.stringify(search_query));
+				//console.log("Complete set", complete_set);
+				console.log("==SQL results:", result_formatted);
+				next_func(result_formatted, passed_variables);
+			})
+		})
+	})
+}
+
+methods.find_recent_tests_taken_by_user = function(con, user_name, next_func, passed_variables) {
+	var sql2 = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
+	"FROM Test " + 
+	"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
+	"ORDER BY takes.date_taken DESC";
+	con.query(sql2, function(err, result) {
+		if (err) throw err;
+		next_func(result, passed_variables);
+	})
+}
+
+methods.get_tests = function(con, user_name, next_func, passed_variables){
+	sql = "SELECT * FROM test WHERE user_name='"+user_name+"';"
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		next_func(result, passed_variables);
+	});
+};
+
+methods.update_test_information = function(con, user_name, test_id, test_name, test_summary){
+	sql = "UPDATE test SET name='"+test_name+"' WHERE test_id="+test_id+" AND user_name='"+user_name+"';";
+	sql2 = "UPDATE test SET summary='"+test_summary+"' WHERE test_id="+test_id+" AND user_name='"+user_name+"';";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+	con.query(sql2, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.delete_test = function(con, user_name, test_id){
+	sql = "DELETE FROM Test WHERE user_name='"+user_name+"' AND test_id="+test_id+";";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.delete_question = function(con, question_ID){
+	sql = "DELETE FROM question WHERE question_ID="+question_ID+";";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.check_and_make_color = function(con, hex_code, next_func, passed_variables){
+	sql = "SELECT * FROM color WHERE hex_code='"+hex_code+"';";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		if(result.length == 0){
+			sql2 = "INSERT INTO color (hex_code) values('"+hex_code+"');";
+			con.query(sql2, function(err, result){
+				if (err) throw err;
+				next_func(result, passed_variables);
+			});
+		}
+		else{
+			next_func(result, passed_variables);
+		};
+	});
+};
+
+methods.new_question = function(con, hex_code, test_ID){
+	sql = "INSERT INTO question (hex_code, test_ID) VALUES ('"+hex_code+"', "+test_ID+");";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
+};
+
+methods.take_test = function(con, user_name, test_id){
+	sql = "SELECT * from takes WHERE user_name='"+user_name+"' AND test_ID="+test_id+";";
+	var date_ob = new Date();
+	date = "'" + date_ob.getFullYear() + "-" + date_ob.getMonth() + "-" + date_ob.getDate() + "'";
+	con.query(sql, function(err, result){
+		if (err) throw err;
+		if (result.length == 0){
+			sql2 = "INSERT INTO takes (user_name, test_ID, date_taken) VALUES ('"+user_name+"', "+test_id+", "+date+");";
+			con.query(sql2, function(err, result){
+				if (err) throw err;
+			});
+		}
+		else{
+			sql2 = "UPDATE takes SET date_taken="+date+" WHERE user_name='"+user_name+"' AND test_ID="+test_id+";";
+			con.query(sql2, function(err, result){
+				if (err) throw err;
+			});
+		};
+	});
 };
 
 

@@ -26,10 +26,8 @@ function reqListener(){
 	}
 	else{
 		var showSomethingModal = document.getElementById('create-login-error-modal');
-		var modalBackdrop = document.getElementById('modal-backdrop');
 
 		showSomethingModal.classList.remove('hidden');
-		modalBackdrop.classList.remove('hidden');
 		setCookie("user_name",'', 5);
 		setCookie("pass", '', 5);
 	};
@@ -59,6 +57,22 @@ window.addEventListener('DOMContentLoaded', function () {
 	for (var i = 0; i < modalHideButtons.length; i++) {
 		modalHideButtons[i].addEventListener('click', hideModals);
 	}
+
+	// make it able to login on enter key
+	var input = document.getElementById("username-input");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("login-button").click();
+		}
+	});
+	var input = document.getElementById("password-input");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("login-button").click();
+		}
+	});
 
 });
 

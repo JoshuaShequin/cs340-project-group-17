@@ -5,49 +5,31 @@ function setCookie(cname, cvalue, exdays) {
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-function showCreateTestModal() {
-
-  var showSomethingModal = document.getElementById('create-test-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
-
-  showSomethingModal.classList.remove('hidden');
-  modalBackdrop.classList.remove('hidden');
-
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 };
 
-function hideModals() {
 
-  var showSomethingModal = document.getElementById('create-test-modal');
-  var showSomethingModal2 = document.getElementById('manage-user-modal');
-  var showSomethingModal3 = document.getElementById('manage-test-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
 
-  showSomethingModal.classList.add('hidden');
-  showSomethingModal2.classList.add('hidden');
-  showSomethingModal3.classList.add('hidden');
-  modalBackdrop.classList.add('hidden');
-
+function attach_url_to_manage_button(){
+	content_of_button = event.target.value.split(",");
+	test_id = content_of_button[0];
+	
+	window.location.replace("/managetest/"+getCookie("user_name")+"/"+test_id);
 };
 
-function showManageUserModal() {
-
-  var showSomethingModal = document.getElementById('manage-user-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
-
-  showSomethingModal.classList.remove('hidden');
-  modalBackdrop.classList.remove('hidden');
-
-};
-
-function showManageTestModal() {
-
-  var showSomethingModal = document.getElementById('manage-test-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
-
-  showSomethingModal.classList.remove('hidden');
-  modalBackdrop.classList.remove('hidden');
-
-};
 
 function logout(){
 	setCookie("user_name",'', 5);
@@ -55,30 +37,44 @@ function logout(){
 	window.location.replace("/");
 }
 
+function re_route_home(){
+	if (window.location.pathname=="/home"){
+		window.location.replace("/home/"+getCookie("user_name"));
+	};
+}
 
+re_route_home();
 window.addEventListener('DOMContentLoaded', function () {
-	
-	var createTestButton = document.getElementsByClassName('create-test-button')[0];
-	if (createTestButton) {
-		createTestButton.addEventListener('click', showCreateTestModal);
-	};
-	
-	var createTestButton = document.getElementsByClassName('manage-account-button')[0];
-	if (createTestButton) {
-		createTestButton.addEventListener('click', showManageUserModal);
-	};
-	
-	var createTestButton = document.getElementsByClassName('Manage-Test-Button')[0];
-	if (createTestButton) {
-		createTestButton.addEventListener('click', showManageTestModal);
-	};
-	
-	var modalHideButtons = document.getElementsByClassName('modal-hide-button');
-	for (var i = 0; i < modalHideButtons.length; i++) {
-		modalHideButtons[i].addEventListener('click', hideModals);
-	}
 	
 	var logoutButton = document.getElementById('logout-button');
 	logoutButton.addEventListener('click', logout);
 	
+	var manage_tests_buttons = document.getElementsByClassName('Manage-Test-Button');
+	for (var i = 0; i < manage_tests_buttons.length; i++){
+		manage_tests_buttons[i].addEventListener('click', attach_url_to_manage_button);
+	}
+  
+  // load in the server info and insert it into the page
+  //send_search_data();
+
 });
+
+function send_search_data() {
+  var oReq = new XMLHttpRequest();
+  user_name = getCookie('user_name');
+  oReq.open("GET", "/home");
+  console.log("==CLIENT:", user_name);
+  oReq.send(user_name);
+  /*
+  test_ID, summary, number_of_questions, name, user_name
+  */
+  // console.log("==search querys", );
+  // search_query = {
+  //     user_name: user_name
+  // };
+  // console.log("==CLIENT search query", search_query);
+
+  // var requestBody = JSON.stringify(search_query);
+  // oReq.setRequestHeader('Content-Type', 'application/json');
+  // console.log("==request body", requestBody);
+};
