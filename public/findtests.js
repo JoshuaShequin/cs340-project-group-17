@@ -5,11 +5,18 @@ function send_search_data() {
     /*
     test_ID, summary, number_of_questions, name, user_name
     */
+
+   
     var test_ID = document.getElementById('test-id-search-input-box').value;
+    test_ID = test_ID.replace(/[^a-zA-Z0-9]/g,);
     var summary = document.getElementById('test-summary-search-input-box').value;
+    summary = summary.replace(/[^a-zA-Z0-9]/g,);
     var number_of_questions = document.getElementById('test-number-of-questions-search-input-box').value;
+    number_of_questions = number_of_questions.replace(/[^a-zA-Z0-9]/g,);
     var name = document.getElementById('test-name-search-input-box').value;
+    name = name.replace(/[^a-zA-Z0-9]/g,);
     var user_name = document.getElementById('test-username-search-input-box').value;
+    user_name = user_name.replace(/[^a-zA-Z0-9]/g,);
 
     //console.log("==search querys", test_ID, summary, number_of_questions, name, user_name);
 
