@@ -206,12 +206,10 @@ methods.create_test = function (res, con, req) {
 	var testNum			= req.body.testNum;
 	var username		= req.body.username;
 
-	console.log("\nTESTS===================================\n");
 
 	var sqlCreate = "INSERT INTO Test (summary, number_of_questions, name, user_name) " +
 									"VALUES ('" + testSummary + "', '" + testNum + "', '" + testName + "', '" + username + "');";
 
-	console.log(sqlCreate);
 	var hey;
 	con.query(sqlCreate, function(err, result){
 		if (err) throw err;
@@ -222,7 +220,6 @@ methods.create_test = function (res, con, req) {
 // find the test id that was just created
 function create_test_testID (res, con, colors, username, testName) {
 	var sql = "SELECT `test_ID` FROM `Test` WHERE `user_name`='"+ username +"' AND `name`='"+ testName +"';";
-	console.log(sql);
 
 	for (i = 0; i < colors.length; i++) {
 		//remove extra character from front of string
@@ -241,7 +238,6 @@ function create_test_testID (res, con, colors, username, testName) {
 
 // run through all the colors
 async function search_test_colors (con,colors) {
-	console.log("\nCOLORS==================================\n");
 	for (let i = 0; i < colors.length; i++) {
 		await color_insert(con,colors[i]);
 	}
@@ -250,7 +246,6 @@ async function search_test_colors (con,colors) {
 // query database
 async function color_insert (con, color) {
 	var sql = "INSERT INTO `Color` (`hex_code`) VALUES ('"+ color +"');";
-	console.log(sql);
 	await con.query(sql, function (err) {
 		if (err)
 			if (err.errno == 1062) 	console.log(color + " is already in database");		// if color is already in database
@@ -265,17 +260,13 @@ async function color_insert (con, color) {
 
 // create the questions and attach foreign keys
 function attachQuestions(con,res,colors,test_ID) {
-	console.log("\nQUESTIONS===============================\n");
 	var sql = "INSERT INTO `Question` (`test_ID`,`hex_code`) VALUES ("+ test_ID +", '";
 	for (let i = 0; i < colors.length; i++) {
-		console.log(sql + colors[i]+"');");
 		con.query(sql + colors[i]+"');", function(err) {
 			if (err) console.log(err);
 		});
 	}
-	console.log("Questions entered");
 	res.status(200).send("Success");
-	console.log("\n==Test created==\n");
 }
 
 /* Create account connection_tool*/
@@ -311,7 +302,6 @@ methods.delete_user = function(con, user_name){
 
 // a universal find_test_ID from various parameters (additive)
 methods.find_test_id = function(con, test_ID, summary, number_of_questions, name, user_name, next_func, passed_variables) {
-	console.log("Find_test_id arguments:", test_ID, summary, number_of_questions, name, user_name);
 	// var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count FROM Test WHERE test_ID='"+test_ID+"';";
 	// var sql2 = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count  FROM Test WHERE summary LIKE '%"+summary+"%';";
 	// var sql3 = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count  FROM Test WHERE number_of_questions='"+number_of_questions+"';";
@@ -320,7 +310,6 @@ methods.find_test_id = function(con, test_ID, summary, number_of_questions, name
 	// create sql queries for all, in the case which user can decide how to search
 	paramter_value_list = [test_ID, summary, number_of_questions, name, user_name];
 	parameter_string_list = ["test_ID", "summary", "number_of_questions", "name", "user_name"];
-	console.log(paramter_value_list);
 	var sql = "";
 	let complete_set = new Set();
 
@@ -354,7 +343,6 @@ methods.find_test_id = function(con, test_ID, summary, number_of_questions, name
 		var result_formatted = JSON.parse(JSON.stringify(result));
 		result_formatted.forEach(complete_set.add, complete_set);
 		//console.log("Complete set", complete_set);
-		console.log("==SQL results:", [...complete_set]);
 		next_func([...complete_set], passed_variables);
 		// console.log("== CLIENT: complete_set: ", [...complete_set]);
 	})
@@ -438,7 +426,7 @@ methods.find_test_id = function(con, test_ID, summary, number_of_questions, name
 methods.find_popular_tests = function(con, next_func, passed_variables) {
 	var sql = "SELECT test_ID, summary, number_of_questions, name, user_name, taken_count " +
 	"FROM Test " +
-	"ORDER BY taken_count DESC";
+	"ORDER BY taken_count DESC";            
 	con.query(sql, function(err, result) {
 		if (err) throw err;
 		next_func(result, passed_variables);
@@ -464,7 +452,6 @@ methods.find_recent_tests_taken_by_user = function(con, user_name, next_func, pa
 	"ORDER BY takes.date_taken DESC";
 	con.query(sql, function(err, result) {
 		if (err) throw err;
-		console.log("==SQL results:", result);
 		next_func(result, passed_variables);
 	})
 }
@@ -479,38 +466,34 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 	let complete_set = new Set();
 	// popular tests
 	var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
-	"FROM Test "
-	"ORDER BY test.taken_count DESC LIMIT 5";
+	"FROM Test ORDER BY test.taken_count DESC LIMIT 5";
+	
 	con.query(sql, function(err, result) {
 		if (err) throw err;
 		// add popular tests
-		console.log("==SQL results:", result);
 		search_query.popularTests = result;
 		// most recent tests created
 		var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
-		"FROM Test " + 
-		"ORDER BY Test.test_ID ASC LIMIT 5";
+		"FROM Test ORDER BY Test.test_ID DESC LIMIT 5"; 
+		
 		con.query(sql, function(err, result) {
 			if (err) throw err;
 			// add your tests
-			console.log("==SQL results:", result);
 			search_query.recentTests = result;;
 			// tests recently taken by user
 			var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
 			"FROM Test " + 
 			"INNER JOIN takes ON Test.test_ID=takes.test_ID " +
 			"INNER JOIN  User ON takes.user_name=User.user_name " +
-			"WHERE (User.user_name='"+user_name+"') " +
-			"ORDER BY takes.date_taken DESC LIMIT 5";
+			"WHERE (User.user_name='"+user_name+"') ORDER BY takes.date_taken DESC LIMIT 5";
+			
 			con.query(sql, function(err, result) {
 				if (err) throw err;
 				// add your tests
-				console.log("==SQL results:", result);
 				search_query.yourTests = result;
 
 				var result_formatted = JSON.parse(JSON.stringify(search_query));
 				//console.log("Complete set", complete_set);
-				console.log("==SQL results:", result_formatted);
 				next_func(result_formatted, passed_variables);
 			})
 		})
