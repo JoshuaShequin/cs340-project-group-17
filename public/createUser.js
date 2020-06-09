@@ -28,6 +28,10 @@ function sendData() {
     sex  : form.elements.sex.value,
     date : form.elements.date.value
   }
+  
+  // removes special characters that mess up database
+  contents.name = contents.name.replace(/[^a-zA-Z0-9]/g, "");
+  contents.pass = contents.pass.replace(/[^a-zA-Z0-9]/g, "");
 
   console.log(form.elements.username.value);
   console.log(form.elements.password.value);
