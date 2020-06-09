@@ -44,15 +44,21 @@ function getCookie(cname) {
 
 function enterCreateQuestionModal () {
   var testForm = document.forms.namedItem("create-test-form");
+  totalQuestion   = testForm.elements.testNum.value;
+  currentQuestion = 1;
+  testName        = testForm.elements.testName.value;
+  testSummary     = testForm.elements.testSummary.value;
+
+  // remove special characters that mess up server
+  testName = testName.replace(/[^a-zA-Z0-9]/g, "");
+  testSummary = testSummary.replace(/[^a-zA-Z0-9]/g, "");
+
   console.log(testForm.elements.testName.value);
   console.log(testForm.elements.testSummary.value);
   console.log(testForm.elements.testNum.value);
   console.log(testForm);
 
-  totalQuestion   = testForm.elements.testNum.value;
-  currentQuestion = 1;
-  testName        = testForm.elements.testName.value;
-  testSummary     = testForm.elements.testSummary.value;
+
   if (totalQuestion == "" || testName == "" || testSummary == "") {
     alert("Must enter values into every box.");
     return;
