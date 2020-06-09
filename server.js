@@ -60,7 +60,7 @@ app.get('/home/:user_name', function(req, res, next){
 app.get('/color', function(req, res, next){
 	// set our default page to index.html, served through handlebars
 	res.status(200).render('colorsearch');
-	
+
 });
 
 app.get('/color/:hex_code', function(req, res, next){
@@ -85,14 +85,27 @@ app.get('/editaccount', function(req, res, next){
 	res.status(200).render('editaccount');
 });
 
+/* Create test requests */
 app.get('/createtest', function(req, res, next){
 
-	res.status(200).render('createtests');
+	res.status(200).render('createtest');
+});
+
+app.post('/createtest', function (req, res, next) {
+	console.log("\n== Attempting to create test with following information")
+	console.log(req.body);
+	if (req.body) {
+		cts.create_test(res, con, req);
+	}
+	else {
+		res.status(400).send("No request");
+	}
 });
 
 app.get('/findtests', function(req, res, next){
 	res.status(200).render('findtests');
 });
+
 
 app.post('/findtests', function(req, res, next){
 	if (req.body && (req.body.test_ID || req.body.summary || req.body.number_of_questions || req.body.name || req.body.user_name)) {
@@ -164,7 +177,7 @@ app.get('/question', function(req, res, next){
 
 app.get('/testinformation/:test_id', function(req, res, next){
 	var test_id = req.params.test_id;
-	
+
 	cts.increment_test_taken_count(con, test_id); // not really representative of the true "taken_count", more like visited count. But it works.
 	cts.get_questions(con, test_id, test_information_render_p1, [req, res, test_id]);
 });
@@ -200,20 +213,20 @@ app.post('/testinformation/answer/:user_name/:question_id', function(req, res, n
 	if (req.body && req.body.user_name && req.body.answer){
 		var user_name = req.params.user_name;
 		var question_id = req.params.question_id;
-		
+
 		cts.get_correct_color(con, question_id, answer_question_p1, [req, res, user_name, question_id, req.body.answer]);
 	}
 	else{
 		res.status(200).send("NO");
 	};
-	
+
 });
 
 app.get('/testinformation/:user_name/:question_id', function(req, res, next){
-	
+
 	var user_name = req.params.user_name;
 	var question_id = req.params.question_id;
-	
+
 	cts.get_answer_information(con, user_name, question_id, relay_question_information, [req, res]);
 	
 });
@@ -280,7 +293,7 @@ function test_information_render_p1(content, passed_variables){
 	}
 	passed_variables.push(questionList);
 	cts.get_test_information(con, passed_variables[2], test_information_render_p2, passed_variables);
-	
+
 }
 
 function test_information_render_p2(content, passed_variables){
@@ -317,7 +330,7 @@ function answer_question_p2(content, passed_variables){
 
 
 function color_count_return(content, passed_variables){
-	
+
 	if(content.length == 0){
 		passed_variables[1].status(404).render('404');
 	} else {
@@ -330,6 +343,9 @@ function color_count_return(content, passed_variables){
 			blueValue: content[0].blue_count
 		});
 	}
+
+
+
 }
 
 function alter_username_2(content, passed_variables){
@@ -432,7 +448,7 @@ SERVER_PORT = process.env.PORT; // this is the port that the server will listen 
 
 if (SERVER_PORT == undefined){
 	// If the PORT variable does not exist, default to port 7721
-	SERVER_PORT = 1337;
+	SERVER_PORT = 7721;
 }
 
 app.listen(SERVER_PORT, function (){

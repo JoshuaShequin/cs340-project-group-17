@@ -7,14 +7,10 @@ var methods = {};
 
 methods.create_connection = function(){
 	var con = mysql.createConnection({
-	//   host: "127.0.0.1",
-	//   user: "root",
-	//   password: "root",
-	//   database: "color_test_testing"
-	  host: "classmysql.engr.oregonstate.edu",
-	  user: "cs340_condreab",
-	  password: "Yoshi40@@",
-	  database: "cs340_condreab"
+	  host: "127.0.0.1",
+	  user: "root",
+	  password: "root",
+	  database: "color_test_testing"
 	});
 	con.connect(function(err){
 		if (err) throw err;
@@ -76,7 +72,7 @@ methods.check_password = function(con, user, pass, next_func, passed_variables){
 methods.increment_test_taken_count = function(con, test_id){
 	/*
 		Increments the taken_count column for a specific test identified by test_id.
-		
+
 		con, the connection object, expected to be connected already
 		test_id - the test_id of the test that is going to have its taken_count incremented
 	*/
@@ -128,18 +124,20 @@ methods.decrement_color_count = function(con, hex_code, color){
 }
 
 methods.get_correct_color = function(con, question_ID, next_func, passed_variables){
-	
+
 	var sql2 = "SELECT hex_code FROM Question WHERE question_ID="+question_ID+";";
 	con.query(sql2, function(err, result){
 		if (err) throw err;
 		var sql = "SELECT * from Color WHERE hex_code='"+result[0].hex_code+"';";
 		con.query(sql, function(err, result){
 			if (err) throw err;
+
 			red_count = result[0].red_count;
 			orange_count = result[0].orange_count;
 			yellow_count = result[0].yellow_count;
 			green_count = result[0].green_count;
 			blue_count = result[0].blue_count;
+
 			correct_color = 1;
 			correct_color_value = 0;
 			counts = [red_count, orange_count, yellow_count, green_count, blue_count]
@@ -176,16 +174,16 @@ methods.update_answer = function(con, user_name, question_id, color_chosen, corr
 		con.query(sql3, function(err, result2){
 			methods.decrement_color_count(con, hex_code, result2[0].color_chosen);
 		});
-		
+
 		con.query(sql, function(err, result){
 			if (err) throw err;
 		});
-		
+
 		con.query(sql2, function(err, result){
 			if (err) throw err;
 			methods.increment_color_count(con, result[0].hex_code, color_chosen);
 		});
-		
+
 	});
 };
 
@@ -199,6 +197,86 @@ methods.get_colorcount = function(con, hex_code, next_func, passed_variables){
 	});
 }
 
+/* Create test tools */
+
+methods.create_test = function (res, con, req) {
+	var colors 			= req.body.colors;
+	var testName 		= req.body.testName;
+	var testSummary	= req.body.testSummary;
+	var testNum			= req.body.testNum;
+	var username		= req.body.username;
+
+	console.log("\nTESTS===================================\n");
+
+	var sqlCreate = "INSERT INTO Test (summary, number_of_questions, name, user_name) " +
+									"VALUES ('" + testSummary + "', '" + testNum + "', '" + testName + "', '" + username + "');";
+
+	console.log(sqlCreate);
+	var hey;
+	con.query(sqlCreate, function(err, result){
+		if (err) throw err;
+		create_test_testID (res, con, colors, username, testName);
+	});
+}
+
+// find the test id that was just created
+function create_test_testID (res, con, colors, username, testName) {
+	var sql = "SELECT `test_ID` FROM `Test` WHERE `user_name`='"+ username +"' AND `name`='"+ testName +"';";
+	console.log(sql);
+
+	for (i = 0; i < colors.length; i++) {
+		//remove extra character from front of string
+		colors[i] = colors[i].slice(1,colors[i].length);
+	}
+	con.query(sql, function (err, result) {
+		// using result[result.length - 1] pulls the most recent version
+		var test_ID = result[result.length - 1].test_ID;
+
+		search_test_colors(con, colors)
+		setTimeout(() => {
+			attachQuestions(con, res, colors, test_ID);
+		}, 600);
+	});
+}
+
+// run through all the colors
+async function search_test_colors (con,colors) {
+	console.log("\nCOLORS==================================\n");
+	for (let i = 0; i < colors.length; i++) {
+		await color_insert(con,colors[i]);
+	}
+}
+
+// query database
+async function color_insert (con, color) {
+	var sql = "INSERT INTO `Color` (`hex_code`) VALUES ('"+ color +"');";
+	console.log(sql);
+	await con.query(sql, function (err) {
+		if (err)
+			if (err.errno == 1062) 	console.log(color + " is already in database");		// if color is already in database
+			else 										console.log(err);																	// any other error
+
+		else {
+			// console.log(color + " entered into database");															// Success!
+			return 1;
+		}
+	});
+}
+
+// create the questions and attach foreign keys
+function attachQuestions(con,res,colors,test_ID) {
+	console.log("\nQUESTIONS===============================\n");
+	var sql = "INSERT INTO `Question` (`test_ID`,`hex_code`) VALUES ("+ test_ID +", '";
+	for (let i = 0; i < colors.length; i++) {
+		console.log(sql + colors[i]+"');");
+		con.query(sql + colors[i]+"');", function(err) {
+			if (err) console.log(err);
+		});
+	}
+	console.log("Questions entered");
+	res.status(200).send("Success");
+	console.log("\n==Test created==\n");
+}
 
 /* Create account connection_tool*/
 
