@@ -30,8 +30,8 @@ function sendData() {
   }
 
   // removes special characters that mess up database
-  contents.name = contents.name.replace(/[^a-zA-Z0-9]/g, "");
-  contents.pass = contents.pass.replace(/[^a-zA-Z0-9]/g, "");
+  contents.name = contents.name.replace(/[^a-zA-Z0-9] /g, "");
+  contents.pass = contents.pass.replace(/[^a-zA-Z0-9] /g, "");
 
   console.log(contents.name);
   console.log(contents.pass);
