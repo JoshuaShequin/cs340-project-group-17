@@ -8,15 +8,20 @@ function send_search_data() {
 
    
     var test_ID = document.getElementById('test-id-search-input-box').value;
-    test_ID = test_ID.replace(/[^a-zA-Z0-9]/g,);
+    test_ID = test_ID.replace(/[^a-zA-Z0-9] /g,);
+    test_ID.replace(/\s+/g, " ").trim();
     var summary = document.getElementById('test-summary-search-input-box').value;
-    summary = summary.replace(/[^a-zA-Z0-9]/g,);
+    summary = summary.replace(/[^a-zA-Z0-9] /g,);
+    summary.replace(/\s+/g, " ").trim();
     var number_of_questions = document.getElementById('test-number-of-questions-search-input-box').value;
-    number_of_questions = number_of_questions.replace(/[^a-zA-Z0-9]/g,);
+    number_of_questions = number_of_questions.replace(/[^a-zA-Z0-9] /g,);
+    number_of_questions.replace(/\s+/g, " ").trim();
     var name = document.getElementById('test-name-search-input-box').value;
-    name = name.replace(/[^a-zA-Z0-9]/g,);
+    name = name.replace(/[^a-zA-Z0-9] /g,);
+    name.replace(/\s+/g, " ").trim();
     var user_name = document.getElementById('test-username-search-input-box').value;
-    user_name = user_name.replace(/[^a-zA-Z0-9]/g,);
+    user_name = user_name.replace(/[^a-zA-Z0-9] /g,);
+    user_name.replace(/\s+/g, " ").trim();
 
     //console.log("==search querys", test_ID, summary, number_of_questions, name, user_name);
 
