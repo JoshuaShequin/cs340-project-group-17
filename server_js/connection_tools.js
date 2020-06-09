@@ -343,6 +343,7 @@ methods.find_test_id = function(con, test_ID, summary, number_of_questions, name
 		var result_formatted = JSON.parse(JSON.stringify(result));
 		result_formatted.forEach(complete_set.add, complete_set);
 		//console.log("Complete set", complete_set);
+
 		next_func([...complete_set], passed_variables);
 		// console.log("== CLIENT: complete_set: ", [...complete_set]);
 	})
@@ -452,6 +453,7 @@ methods.find_recent_tests_taken_by_user = function(con, user_name, next_func, pa
 	"ORDER BY takes.date_taken DESC";
 	con.query(sql, function(err, result) {
 		if (err) throw err;
+
 		next_func(result, passed_variables);
 	})
 }
@@ -471,6 +473,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 	con.query(sql, function(err, result) {
 		if (err) throw err;
 		// add popular tests
+
 		search_query.popularTests = result;
 		// most recent tests created
 		var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
@@ -479,6 +482,7 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 		con.query(sql, function(err, result) {
 			if (err) throw err;
 			// add your tests
+
 			search_query.recentTests = result;;
 			// tests recently taken by user
 			var sql = "SELECT Test.test_ID, Test.summary, Test.number_of_questions, Test.name, Test.user_name, Test.taken_count " +
@@ -490,10 +494,12 @@ methods.find_all_tests = function(con, user_name, next_func, passed_variables) {
 			con.query(sql, function(err, result) {
 				if (err) throw err;
 				// add your tests
+
 				search_query.yourTests = result;
 
 				var result_formatted = JSON.parse(JSON.stringify(search_query));
 				//console.log("Complete set", complete_set);
+
 				next_func(result_formatted, passed_variables);
 			})
 		})

@@ -63,7 +63,7 @@ function send_search_data() {
   var oReq = new XMLHttpRequest();
   user_name = getCookie('user_name');
   oReq.open("GET", "/home");
-  console.log("==CLIENT:", user_name);
+  //console.log("==CLIENT:", user_name);
   oReq.send(user_name);
   /*
   test_ID, summary, number_of_questions, name, user_name
