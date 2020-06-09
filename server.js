@@ -86,7 +86,6 @@ app.get('/createtest', function(req, res, next){
 app.post('/createtest', function (req, res, next) {
 	console.log("\n== Attempting to create test with following information")
 	console.log(req.body);
-	console.log("\n");
 	if (req.body) {
 		cts.create_test(res, con, req);
 	}

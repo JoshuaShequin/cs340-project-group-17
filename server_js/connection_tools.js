@@ -197,13 +197,14 @@ methods.create_test = function (res, con, req) {
 	var testNum			= req.body.testNum;
 	var username		= req.body.username;
 
+	console.log("\nTESTS===================================\n");
+
 	var sqlCreate = "INSERT INTO Test (summary, number_of_questions, name, user_name) " +
 									"VALUES ('" + testSummary + "', '" + testNum + "', '" + testName + "', '" + username + "');";
 
 	console.log(sqlCreate);
 	var hey;
 	con.query(sqlCreate, function(err, result){
-		// console.log(result);
 		if (err) throw err;
 		create_test_testID (res, con, colors, username, testName);
 	});
@@ -220,9 +221,12 @@ function create_test_testID (res, con, colors, username, testName) {
 	}
 	con.query(sql, function (err, result) {
 		// using result[result.length - 1] pulls the most recent version
-		var test_ID = result[result.length - 1];
-		search_test_colors(con, colors).then(finish());
+		var test_ID = result[result.length - 1].test_ID;
 
+		search_test_colors(con, colors)
+		setTimeout(() => {
+			attachQuestions(con, res, colors, test_ID);
+		}, 600);
 	});
 }
 
@@ -236,7 +240,7 @@ async function search_test_colors (con,colors) {
 
 // query database
 async function color_insert (con, color) {
-	var sql = "INSERT INTO `Color` (`hex_code`) VALUES ('"+ color +"');\n";
+	var sql = "INSERT INTO `Color` (`hex_code`) VALUES ('"+ color +"');";
 	console.log(sql);
 	await con.query(sql, function (err) {
 		if (err)
@@ -244,17 +248,26 @@ async function color_insert (con, color) {
 			else 										console.log(err);																	// any other error
 
 		else {
-			console.log(color + " entered into database");															// Success!
+			// console.log(color + " entered into database");															// Success!
 			return 1;
 		}
 	});
 }
 
-
-function finish () {
-	console.log("END2");
+// create the questions and attach foreign keys
+function attachQuestions(con,res,colors,test_ID) {
+	console.log("\nQUESTIONS===============================\n");
+	var sql = "INSERT INTO `Question` (`test_ID`,`hex_code`) VALUES ("+ test_ID +", '";
+	for (let i = 0; i < colors.length; i++) {
+		console.log(sql + colors[i]+"');");
+		con.query(sql + colors[i]+"');", function(err) {
+			if (err) console.log(err);
+		});
+	}
+	console.log("Questions entered");
+	res.status(200).send("Success");
+	console.log("\n==Test created==\n");
 }
-
 
 /* Create account connection_tool*/
 

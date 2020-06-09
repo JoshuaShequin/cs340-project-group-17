@@ -135,10 +135,6 @@ function serverListener () {
     alert("Test successfully created.");
     exitCreateQuestionModal(true);
   }
-  // else if (this.responseText == "exists") {
-  //   console.log("Username already exists.");
-  //   alert("Username already taken. Please enter a different name.");
-  // }
   else {
     console.log("Error: " + this.responseText);
   }
