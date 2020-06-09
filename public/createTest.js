@@ -124,8 +124,8 @@ function sendTestData(colors) {
   }
 
   // remove special characters that mess up server
-  contents.testName = contents.testName.replace(/[^a-zA-Z0-9]/g, "");
-  contents.testSummary = contents.testSummary.replace(/[^a-zA-Z0-9]/g, "");
+  contents.testName = contents.testName.replace(/[^a-zA-Z0-9] /g, "");
+  contents.testSummary = contents.testSummary.replace(/[^a-zA-Z0-9] /g, "");
 
   console.log(contents);
 
