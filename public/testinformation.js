@@ -38,7 +38,7 @@ function submitAnswer(){
 };
 
 function showQuestionModal() {
-	content_of_button = event.target.value.split(",").replace(/[^a-zA-Z0-9]/g, "");
+	content_of_button = event.target.value.split(",");
 	question_id = content_of_button[0];
 	
 
