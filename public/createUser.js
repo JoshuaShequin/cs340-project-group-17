@@ -19,19 +19,8 @@ function hideCreateAccountModal() {
 };
 
 function sendData() {
-	var oReq = new XMLHttpRequest();
-
-	oReq.addEventListener("load", serverListener);
-
-	oReq.open("POST", "/createUser");
 
   var form = document.forms[0];
-
-  // console.log(form);
-  console.log(form.elements.username.value);
-  console.log(form.elements.password.value);
-  console.log(form.elements.sex.value);
-  console.log(form.elements.date.value);
 
   var contents = {
     name : form.elements.username.value,
@@ -40,9 +29,26 @@ function sendData() {
     date : form.elements.date.value
   }
 
+  console.log(form.elements.username.value);
+  console.log(form.elements.password.value);
+  console.log(form.elements.sex.value);
+  console.log(form.elements.date.value);
+
+  if (contents.name == "" || contents.pass == "" || contents.date == "") {
+    alert("Please fill out each portion of the form");
+    return;
+  }
+
+	var oReq = new XMLHttpRequest();
+
+	oReq.addEventListener("load", serverListener);
+
+	oReq.open("POST", "/createUser");
+
   var requestBody = JSON.stringify(contents);
   oReq.setRequestHeader('Content-Type', 'application/json');
   oReq.send(requestBody);
+
 };
 
 function serverListener () {
