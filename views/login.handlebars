@@ -56,13 +56,13 @@ class: Modal-Exit-Button
   <form id="create-account-form">
 		<div class="create-account-entry">
 	  	<label for="username"><b>Username</b></label>
-	    <input type="text" name="username" id="username-input" placeholder="Enter username...">
+	    <input type="text" name="username" id="username-input" placeholder="Enter username..." required>
 		</div>
 
 
 		<div class="create-account-entry">
 	  	<label for="password"><b>Password</b></label>
-	    <input type="text" name="password" id="password-input" placeholder="Enter password...">
+	    <input type="text" name="password" id="password-input" placeholder="Enter password..." required>
 		</div>
 
 		<div class="create-account-entry">
@@ -80,7 +80,7 @@ class: Modal-Exit-Button
 
 		<div class="create-account-entry">
       <label for="date"><b>Birthdate</b></label>
-      <input type="date" name="date" id="password-input">
+      <input type="date" name="date" id="password-input" required>
 		</div>
 
         <button type="button" id="create-account-button" onclick="sendData();">Create</button>

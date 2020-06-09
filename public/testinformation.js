@@ -131,7 +131,29 @@ function deselectAllColors(){
 	for (var i = 0; i < colors.length; i++){
 		colors[i].classList.remove('answer-selected');
 	}
-}
+};
+
+function update_take_test(){
+	var test_id = window.location.pathname.split("/")[2]
+	console.log(test_id);
+	
+	var answered_already = false;
+  
+	// get answer information from site
+	user_name = getCookie('user_name');
+	var oReq = new XMLHttpRequest();
+	oReq.addEventListener("load", showAnswerInformation);
+	oReq.open("POST", "/taketest");
+
+	var get_contents = {
+		user_name: user_name,
+		test_id: test_id
+	};
+
+	var requestBody = JSON.stringify(get_contents);
+	oReq.setRequestHeader('Content-Type', 'application/json');
+	oReq.send(requestBody);
+};
 
 function hideModals() {
 
@@ -161,3 +183,5 @@ window.addEventListener('DOMContentLoaded', function () {
 	submitButton.addEventListener('click', submitAnswer);
 	
 });
+
+update_take_test();
