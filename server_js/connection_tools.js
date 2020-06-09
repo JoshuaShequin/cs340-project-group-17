@@ -7,10 +7,14 @@ var methods = {};
 
 methods.create_connection = function(){
 	var con = mysql.createConnection({
-	  host: "classmysql.engr.oregonstate.edu",
-	  user: "cs340_thomlane",
-	  password: "2564",
-	  database: "cs340_thomlane"
+	  host: "127.0.0.1",
+	  user: "root",
+	  password: "root",
+	  database: "color_test_testing"
+	  /*host: "classmysql.engr.oregonstate.edu",
+	  user: "cs340_bruckerl",
+	  password: "4091",
+	  database: "cs340_bruckerl"*/
 	});
 	con.connect(function(err){
 		if (err) throw err;
@@ -28,6 +32,14 @@ methods.check_user_name = function(con, user, next_func, passed_variables){
 		else next_func(true, passed_variables);
 	});
 
+}
+
+methods.alter_username = function(con, user, pass, olduser){
+	hash = bcrypt.hashSync(pass, saltRounds);
+	var sql = 'Update User SET user_name="'+user+'" WHERE user_name="'+olduser+'";';
+	con.query(sql, function(err, result){
+		if (err) throw err;
+	});
 }
 
 methods.update_password = function(con, user, pass){
@@ -286,17 +298,18 @@ methods.create_userB = function (exists, list) {
 
 		var sqlEnter =	"INSERT INTO User (user_name, credentials, birth_date, sex) " +
 											"VALUES ('" + list.name + "', '" + hash + "', '" + list.date + "', " + sexI + ");";
-		console.log(sqlEnter);
 		con.query(sqlEnter);
 
-		console.log("Sending success");
 		list.res.status(200).send("success");
-		console.log("Sent");
 	}
 	else {
-		console.log("INSERT failed; Username already exists");
 		list.res.status(200).send("exists");
 	}
+};
+
+methods.delete_user = function(con, user_name){
+	sql = "DELETE FROM User WHERE user_name='"+user_name+"';";
+	con.query(sql);
 };
 
 

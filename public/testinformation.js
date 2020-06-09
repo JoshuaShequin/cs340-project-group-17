@@ -32,6 +32,8 @@ function submitAnswer(){
 		var requestBody = JSON.stringify(post_contents);
 		oReq.setRequestHeader('Content-Type', 'application/json');
 		oReq.send(requestBody);
+		
+		hideModals();
 	}
 };
 
@@ -48,7 +50,6 @@ function showQuestionModal() {
 	var questionColor = document.getElementById('color-container');
 	questionColor.style = "background-color:"+content_of_button[1]+"; width: 100px; height: 100px;"
 	var showSomethingModal = document.getElementById('answer-question-modal');
-	var modalBackdrop = document.getElementById('modal-backdrop');
   
 	// get answer information from site
 	user_name = getCookie('user_name');
@@ -65,7 +66,6 @@ function showQuestionModal() {
 	oReq.send(requestBody);
   
 	showSomethingModal.classList.remove('hidden');
-	modalBackdrop.classList.remove('hidden');
 
 };
 
@@ -135,10 +135,8 @@ function deselectAllColors(){
 function hideModals() {
 
   var showSomethingModal = document.getElementById('answer-question-modal');
-  var modalBackdrop = document.getElementById('modal-backdrop');
 
   showSomethingModal.classList.add('hidden');
-  modalBackdrop.classList.add('hidden');
 
 };
 

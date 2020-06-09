@@ -26,10 +26,8 @@ function reqListener(){
 	}
 	else{
 		var showSomethingModal = document.getElementById('create-login-error-modal');
-		var modalBackdrop = document.getElementById('modal-backdrop');
 
 		showSomethingModal.classList.remove('hidden');
-		modalBackdrop.classList.remove('hidden');
 		setCookie("user_name",'', 5);
 		setCookie("pass", '', 5);
 	};

@@ -71,11 +71,20 @@ app.get('/color/:hex_code', function(req, res, next){
 	cts.get_colorcount(con, hex_code, color_count_return, [req, res, hex_code, next]);
 });
 
+app.post('/deleteAccount', function(req, res, next){
+	if (req.body && req.body.user_name){
+		cts.delete_user(con, req.body.user_name);
+	};
+});
+
 app.get('/createaccount', function(req, res, next){
 	// set our default page to index.html, served through handlebars
 	res.status(200).render('createaccount');
 });
 
+app.get('/editaccount', function(req, res, next){
+	res.status(200).render('editaccount');
+});
 
 /* Create test requests */
 app.get('/createtest', function(req, res, next){
@@ -173,14 +182,24 @@ app.get('/testinformation/:user_name/:question_id', function(req, res, next){
 
 /////////////////////////////////
 app.post('/createuser', function (req,res, next) {
-	console.log("\n== Attempting to create new user with following attributes");
-	console.log(req.body);
-	console.log("\n");
 	if (req.body) {
 		cts.create_userA(res, con, req.body.name, req.body.pass, req.body.date, req.body.sex);
 	}
 });
 /////////////////////////////////
+
+app.post('/alterUsername', function (req, res, next){
+	if (req.body) {
+		cts.check_user_name(con, req.body.oldname, alter_username_2, [req, res, req.body.name, req.body.pass, req.body.oldname]);
+	}
+});
+
+app.post('/alterPassword', function (req, res, next){
+	if (req.body) {
+		cts.check_user_name(con, req.body.oldname, alter_password_2, [req, res, req.body.oldname, req.body.pass]);
+	}
+});
+
 
 app.get('*', function (req, res, next){
 	// if requested routing does not exist, serve 404 page through handlebars
@@ -275,6 +294,45 @@ function color_count_return(content, passed_variables){
 
 
 }
+
+function alter_username_2(content, passed_variables){
+	if (content){
+		if (passed_variables[2] == ''){
+			passed_variables[1].send("empty");
+		}
+		else{
+			cts.check_user_name(con, passed_variables[2], alter_username_3, passed_variables);
+		}
+	}
+	else{
+		passed_variables[1].send("error");
+	};
+};
+
+function alter_username_3(content, passed_variables){
+	if (content){
+		passed_variables[1].send("exists");
+	}
+	else{
+		cts.alter_username(con, passed_variables[2], passed_variables[3], passed_variables[4]);
+		passed_variables[1].send("success");
+	}
+};
+
+function alter_password_2(content, passed_variables){
+	if (content){
+		if (passed_variables[2] == ''){
+			passed_variables[1].send("empty");
+		}
+		else{
+			cts.update_password(con, passed_variables[2], passed_variables[3]);
+			passed_variables[1].send("success");
+		}
+	}
+	else{
+		passed_variables[1].send("error");
+	}
+};
 
 
 //////End///////////////--server function--///////////////////////////////////////////////
